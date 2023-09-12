@@ -118,4 +118,4 @@ function Appointments({ property, modFavs }) {
   );
 }
 
-export default Cards;
+export default Appointments;

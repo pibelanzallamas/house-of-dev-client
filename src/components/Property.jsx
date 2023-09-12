@@ -1,11 +1,10 @@
 import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { alerts } from "../utils/alerts";
 import useInput from "../hooks/useInput";
 import Navbar from "./Navbar";
-import { setUser } from "../state/userState";
 
 function Property() {
   const user = useSelector((state) => state.user);
@@ -23,23 +22,16 @@ function Property() {
   const [price, setPrice] = useState("");
   const [categories, setCategories] = useState("");
   const [disponibility, setDisponibility] = useState("");
-  const [modRes, setModRes] = useState(false);
+  const [estado, setEstado] = useState(false);
   const [like, setLike] = useState(false);
   const [reviews, setReviews] = useState([]);
   const comentario = useInput("");
   const valoracion = useInput(1);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispo = ["Alquiler", "Venta"];
+  const cate = ["Ph", "Local", "Terreno", "Casa", "Departamento"];
 
-  //obtiene al user
-  useEffect(() => {
-    axios
-      .post("/api/users/me")
-      .then((cok) => dispatch(setUser(cok.data)))
-      .catch((err) => console.log(err));
-  }, [dispatch]);
-
-  //obtiene la propiedad
+  //get propiedad
   useEffect(() => {
     axios
       .get(`/api/properties/${pid}`)
@@ -58,9 +50,9 @@ function Property() {
         setDisponibility(prop.data.disponibility);
       })
       .catch((err) => console.log(err));
-  }, [modRes]);
+  }, [estado]);
 
-  //modifica la propieda
+  //modifica la propiedad
   function handleMod(e) {
     e.preventDefault();
 
@@ -80,10 +72,9 @@ function Property() {
         disponibility,
       })
       .then((mod) => {
-        console.log(mod);
         if (mod.data[0] === 1) {
+          setEstado(!estado);
           alerts("Ok!", "La propiedad se modificó 👍", "success");
-          setModRes(!modRes);
         } else {
           alerts("Ohoh!", "Ingrese datos validos 😵", "warning");
         }
@@ -93,7 +84,37 @@ function Property() {
       });
   }
 
-  //eliminar propiedad
+  //verfican los datos
+  function handleDispo() {
+    if (!dispo.includes(disponibility)) {
+      alerts(
+        "Ohno!",
+        `Ingrese "Alquiler" o "Venta" en Disponibilidad 🤓`,
+        "warning"
+      );
+      setDisponibility("");
+    }
+  }
+
+  function handleCate() {
+    if (!cate.includes(categories)) {
+      alerts(
+        "Ohno!",
+        `Ingrese "Casa", "Departamento", "Local", "Ph", "Terreno" en Categoría 🤓`,
+        "warning"
+      );
+      setCategories("");
+    }
+  }
+
+  function handlePrice() {
+    if (price > 1000000 || price < 10000) {
+      alerts("Ohno!", `Ingrese un precio entre 10000 a 1000000 🤓`, "warning");
+      setPrice(10000);
+    }
+  }
+
+  //elimina la propiedad
   function hanldeDel(e) {
     e.preventDefault();
 
@@ -108,13 +129,13 @@ function Property() {
       });
   }
 
-  //para saber si esta likeado
+  //get favorito
   useEffect(() => {
     axios.get("/api/favorites/find", { params: { uid, pid } }).then((fav) => {
       if (fav.data.pid) setLike(true);
       else setLike(false);
     });
-  }, []);
+  }, [estado, user]);
 
   //likea
   function hanldeLike() {
@@ -159,6 +180,14 @@ function Property() {
       });
   }
 
+  //get reviews
+  useEffect(() => {
+    axios
+      .get(`/api/reviews/${pid}`)
+      .then((rev) => setReviews(rev.data))
+      .catch((err) => console.log(err));
+  }, [estado]);
+
   //agrega review
   function handleReview(e) {
     e.preventDefault();
@@ -173,7 +202,7 @@ function Property() {
       .then((rev) => {
         if (rev.data[1]) {
           alerts("Vamos!", "La reseña se creó con exito 🏠", "success");
-          setModRes(!modRes);
+          setEstado(!estado);
           valoracion.clearInput();
           comentario.clearInput();
         } else if (!rev.data[1]) {
@@ -187,18 +216,22 @@ function Property() {
       .catch((err) => console.log(err));
   }
 
-  //encuentra todas las reviews
-  useEffect(() => {
+  //elimnina review
+  function handleDrop(rid) {
     axios
-      .get(`/api/reviews/${pid}`)
-      .then((rev) => setReviews(rev.data))
-      .catch((err) => console.log(err));
-  }, [modRes]);
+      .delete(`/api/reviews/${rid}`)
+      .then(() => {
+        alerts("Ok!", "La review se eliminó 👍", "success");
+        setEstado(!estado);
+      })
+      .catch(() => {
+        alerts("Nope!", "La review no pudo eliminarse 🤏", "warning");
+      });
+  }
 
   return (
     <div>
       <Navbar />
-
       <div className="home">
         <div className="home-titulo" style={{ "margin-bottom": "1%" }}>
           <h2 className="linea1" style={{ "text-transform": "uppercase" }}>
@@ -206,8 +239,8 @@ function Property() {
           </h2>
         </div>
         <div className="property-card">
-          <div className="user-datos" style={{ height: "817px" }}>
-            <form>
+          <div className="user-datos" style={{ height: "890px" }}>
+            <form onSubmit={handleMod}>
               <img
                 src={images}
                 alt={name}
@@ -224,105 +257,169 @@ function Property() {
               />
 
               <div className="inputName">
-                <label> Nombre </label>
+                <label htmlFor="name"> Nombre </label>
                 <br></br>
                 <input
+                  id="name"
+                  type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  minLength={3}
+                  maxLength={25}
+                  required
                 ></input>
               </div>
 
               <div className="inputEmail">
-                <label> Dirección </label>
+                <label htmlFor="address"> Dirección </label>
                 <br></br>
                 <input
+                  id="address"
+                  type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
+                  minLength={3}
+                  maxLength={25}
+                  required
                 ></input>
               </div>
 
               <div className="inputTel">
-                <label> Barrio </label>
+                <label htmlFor="neighborhood"> Barrio </label>
                 <br></br>
                 <input
+                  id="neighborhood"
+                  type="text"
                   value={neighborhood}
                   onChange={(e) => setNeighborhood(e.target.value)}
+                  minLength={3}
+                  maxLength={25}
+                  required
                 ></input>
               </div>
 
               <div className="inputTel">
-                <label> Ciudad </label>
+                <label htmlFor="city"> Ciudad </label>
                 <br></br>
                 <input
+                  id="city"
+                  type="text"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
+                  minLength={3}
+                  maxLength={10}
+                  required
                 ></input>
               </div>
 
               <div className="inputTel">
-                <label> País </label>
+                <label htmlFor="country"> País </label>
                 <br></br>
                 <input
+                  id="country"
+                  type="text"
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
+                  minLength={3}
+                  maxLength={25}
+                  required
                 ></input>
               </div>
 
               <div className="inputTel">
-                <label> Baños </label>
+                <label htmlFor="bathrooms"> Baños </label>
                 <br></br>
                 <input
+                  id="bathrooms"
+                  type="number"
                   value={bathrooms}
                   onChange={(e) => setBathrooms(e.target.value)}
+                  min={1}
+                  max={15}
+                  required
                 ></input>
               </div>
 
               <div className="inputTel">
-                <label> Habitaciones </label>
+                <label htmlFor="rooms"> Habitaciones </label>
                 <br></br>
                 <input
+                  id="rooms"
+                  type="number"
                   value={rooms}
                   onChange={(e) => setRooms(e.target.value)}
+                  min={1}
+                  max={20}
+                  required
                 ></input>
               </div>
 
               <div className="inputTel">
-                <label> Description </label>
+                <label htmlFor="description"> Description </label>
                 <br></br>
                 <input
+                  id="description"
+                  type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
+                  minLength={3}
+                  maxLength={70}
+                  required
                 ></input>
               </div>
 
               <div className="inputTel">
-                <label> Disponibilidad </label>
+                <label htmlFor="disponibility"> Disponibilidad </label>
                 <br></br>
                 <input
+                  id="disponibility"
+                  type="text"
                   value={disponibility}
                   onChange={(e) => setDisponibility(e.target.value)}
+                  onBlur={handleDispo}
+                  required
                 ></input>
               </div>
 
               <div className="inputTel">
-                <label> Categoría </label>
+                <label htmlFor="categories"> Categoría </label>
                 <br></br>
                 <input
+                  id="categories"
+                  type="text"
                   value={categories}
                   onChange={(e) => setCategories(e.target.value)}
+                  onBlur={handleCate}
+                  required
                 ></input>
               </div>
 
               <div className="inputTel">
-                <label> Precio </label>
+                <label htmlFor="price"> Precio </label>
                 <br></br>
                 <strong style={{ fontSize: "20px", borderBottom: "solid 1px" }}>
                   $
                 </strong>
                 <input
+                  id="price"
+                  type="number"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   style={{ width: "94.7%" }}
+                  onBlur={handlePrice}
+                  required
+                ></input>
+              </div>
+
+              <div className="inputTel">
+                <label htmlFor="images"> Imagen </label>
+                <br></br>
+                <input
+                  id="images"
+                  type="url"
+                  value={images}
+                  onChange={(e) => setImages(e.target.value)}
+                  required
                 ></input>
               </div>
 
@@ -330,15 +427,15 @@ function Property() {
                 <>
                   <button
                     className="boton-editar"
-                    onClick={(e) => handleMod(e)}
-                    style={{ left: "69%", top: "94%" }}
+                    //onClick={(e) => handleMod(e)}
+                    style={{ left: "70%", top: "92%" }}
                   >
                     MODIFICAR
                   </button>
                   <button
                     className="boton-editar "
                     onClick={(e) => hanldeDel(e)}
-                    style={{ left: "81%", top: "94%" }}
+                    style={{ left: "82%", top: "92%" }}
                   >
                     ELIMINAR
                   </button>
@@ -391,6 +488,19 @@ function Property() {
                     value={review.user.name}
                     style={{ border: "none" }}
                   ></input>
+                  {user.admin ? (
+                    <button
+                      className="boton-drop"
+                      onClick={() => {
+                        handleDrop(review.id);
+                      }}
+                    >
+                      ELIMINAR
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+
                   <br></br>
                   <label> VALORACIÓN </label>
                   <br></br>
@@ -403,13 +513,15 @@ function Property() {
               ))
             ) : (
               <div className="home-titulo" style={{ border: "none" }}>
-                <h2 className="linea1">NO HAY RESEÑAS</h2>
+                <h2 className="linea1" style={{ "margin-right": "1%" }}>
+                  NO HAY RESEÑAS
+                </h2>
               </div>
             )}
           </div>
         </div>
-        {/* //Titulo Escribir Reseña */}
         <div className="escribir-comments">
+          {/* //Titulo Escribir Reseña */}
           <div
             className="home-titulo"
             style={{ "margin-bottom": "1%", color: "red" }}

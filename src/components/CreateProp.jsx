@@ -19,6 +19,28 @@ function Properties() {
   const images = useInput("");
   const price = useInput("");
   const navigate = useNavigate();
+  const dispo = ["Alquiler", "Venta"];
+  const cate = ["Ph", "Local", "Terreno", "Casa", "Departamento"];
+
+  function handleDispo() {
+    if (!dispo.includes(disponibility)) {
+      alerts(
+        "Ohno!",
+        `Ingrese "Alquiler" o "Venta" en Disponibilidad 🤓`,
+        "warning"
+      );
+    }
+  }
+
+  function handleCate() {
+    if (!cate.includes(categories)) {
+      alerts(
+        "Ohno!",
+        `Ingrese "Casa", "Departamento", "Local", "Ph", "Terreno" en Categoría 🤓`,
+        "warning"
+      );
+    }
+  }
 
   function handleRegister(e) {
     e.preventDefault();
@@ -66,47 +88,78 @@ function Properties() {
               <div className="inputName">
                 <label> Nombre </label>
                 <br></br>
-                <input {...name} type="text" required maxLength={15}></input>
+                <input
+                  id="name"
+                  type="text"
+                  {...name}
+                  minLength={3}
+                  maxLength={25}
+                  required
+                ></input>
               </div>
 
               <div className="inputEmail">
                 <label> Dirección </label>
                 <br></br>
-                <input {...address} type="text" required maxLength={25}></input>
+                <input
+                  id="address"
+                  {...address}
+                  type="text"
+                  required
+                  minLength={3}
+                  maxLength={25}
+                ></input>
               </div>
 
               <div className="inputTel">
                 <label> Barrio </label>
                 <br></br>
                 <input
-                  {...neighborhood}
+                  id="neighborhood"
                   type="text"
-                  required
+                  {...neighborhood}
+                  minLength={3}
                   maxLength={25}
+                  required
                 ></input>
               </div>
 
               <div className="inputTel">
                 <label> Ciudad </label>
                 <br></br>
-                <input {...city} type="text" required maxLength={25}></input>
+                <input
+                  id="city"
+                  type="text"
+                  {...city}
+                  minLength={3}
+                  maxLength={25}
+                  required
+                ></input>
               </div>
 
               <div className="inputTel">
                 <label> País </label>
                 <br></br>
-                <input {...country} type="text" required maxLength={15}></input>
+                <input
+                  id="country"
+                  type="text"
+                  {...country}
+                  minLength={3}
+                  maxLength={25}
+                  required
+                ></input>
               </div>
 
               <div className="inputTel">
                 <label> Baños </label>
                 <br></br>
                 <input
-                  {...bathrooms}
+                  id="number"
                   type="number"
-                  required
+                  {...bathrooms}
                   min={1}
-                  max={20}
+                  max={15}
+                  required
                 ></input>
               </div>
 
@@ -114,11 +167,12 @@ function Properties() {
                 <label> Habitaciones </label>
                 <br></br>
                 <input
-                  {...rooms}
+                  id="rooms"
                   type="number"
-                  required
+                  {...rooms}
                   min={1}
-                  max={30}
+                  max={20}
+                  required
                 ></input>
               </div>
 
@@ -126,34 +180,48 @@ function Properties() {
                 <label> Description </label>
                 <br></br>
                 <input
-                  {...description}
+                  id="description"
                   type="text"
+                  {...description}
+                  minLength={3}
+                  maxLength={70}
                   required
-                  minLength={20}
-                  maxLength={100}
                 ></input>
               </div>
 
               <div className="inputTel">
                 <label> Disponibilidad </label>
                 <br></br>
-                <input {...disponibility}></input>
+                <input
+                  id="disponibility"
+                  type="text"
+                  {...disponibility}
+                  onBlur={handleDispo}
+                  required
+                ></input>
               </div>
 
               <div>
                 <label> Categoría </label>
                 <br></br>
-                <input {...categories}></input>
+                <input
+                  id="categories"
+                  type="text"
+                  {...categories}
+                  onBlur={handleCate}
+                  required
+                ></input>
               </div>
 
               <div className="inputTel">
                 <label> Precio </label>
                 <br></br>
                 <input
-                  {...price}
+                  id="price"
                   type="number"
-                  min={50000}
-                  max={40000000}
+                  {...price}
+                  min={10000}
+                  max={1000000}
                   required
                 ></input>
               </div>
@@ -161,12 +229,12 @@ function Properties() {
               <div className="inputTel">
                 <label> Imagen </label>
                 <br></br>
-                <input {...images} type="url" required></input>
+                <input id="images" type="url" {...images} required></input>
               </div>
 
               <button
                 className="boton-editar"
-                style={{ left: "86%", top: "93%" }}
+                style={{ left: "86.5%", top: "93%" }}
               >
                 GUARDAR
               </button>

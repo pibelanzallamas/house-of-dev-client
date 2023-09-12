@@ -8,20 +8,22 @@ import useInput from "../hooks/useInput";
 
 function Content() {
   const [properties, setProperties] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedLocationType, setSelectedLocationType] =
-    useState("neighborhood");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedRooms, setSelectedRooms] = useState("");
-  const categories = ["ph", "local", "terreno", "casa", "departamento"];
   const [estado, setEstado] = useState(false);
-  const [buscador, setBuscador] = useInput("");
-  const [filter, setFilter] = useInput("");
+  // const [filter, setFilter] = useInput("");
+  // const [search, setSearch] = useInput("");
+  // const [selectedCategory, setSelectedCategory] = useState("all");
+  // const [selectedLocationType, setSelectedLocationType] =
+  //   useState("neighborhood");
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [selectedRooms, setSelectedRooms] = useState("");
+  // const categories = ["ph", "local", "terreno", "casa", "departamento"];
 
+  //escucha los cambios del user en Card
   function modFavs() {
     setEstado(!estado);
   }
 
+  //obtiene las propiedades
   useEffect(() => {
     axios
       .get("/api/properties/all")
@@ -29,30 +31,30 @@ function Content() {
       .catch((err) => console.log(err));
   }, [estado]);
 
-  const filteredProperties = properties.filter((property) => {
-    const categoryFilter =
-      selectedCategory === "all" || property.categories === selectedCategory;
-    const locationValue = property[selectedLocationType];
-    const locationFilter = locationValue && locationValue.includes(searchQuery);
-    const roomsFilter = selectedRooms ? property.rooms === selectedRooms : true;
-    return categoryFilter && locationFilter && roomsFilter;
-  });
+  // const filteredProperties = properties.filter((property) => {
+  //   const categoryFilter =
+  //     selectedCategory === "all" || property.categories === selectedCategory;
+  //   const locationValue = property[selectedLocationType];
+  //   const locationFilter = locationValue && locationValue.includes(searchQuery);
+  //   const roomsFilter = selectedRooms ? property.rooms === selectedRooms : true;
+  //   return categoryFilter && locationFilter && roomsFilter;
+  // });
 
-  const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value);
-  };
+  // const handleCategoryChange = (event) => {
+  //   setSelectedCategory(event.target.value);
+  // };
 
-  const handleLocationTypeChange = (event) => {
-    setSelectedLocationType(event.target.value);
-  };
+  // const handleLocationTypeChange = (event) => {
+  //   setSelectedLocationType(event.target.value);
+  // };
 
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
+  // const handleSearchChange = (event) => {
+  //   setSearchQuery(event.target.value);
+  // };
 
-  const handleRoomsChange = (event) => {
-    setSelectedRooms(event.target.value);
-  };
+  // const handleRoomsChange = (event) => {
+  //   setSelectedRooms(event.target.value);
+  // };
 
   return (
     <div>
@@ -93,7 +95,7 @@ function Content() {
         )}
       </div> */}
 
-      <div className="filtros">
+      {/* <div className="filtros">
         <select {...filter} id={"filter"}>
           <option disabled>Seleccione</option>
           <option value={"categoria"}> Categoria</option>
@@ -101,17 +103,21 @@ function Content() {
         </select>
         <input
           type="text"
-          {...buscador}
+          {...search}
           id={"bathrooms"}
           placeholder="Ingrese datos"
         ></input>
-      </div>
+      </div> */}
 
-      <div className="todo-tarjetas-prop">
-        {properties.map((property) => (
-          <Cards property={property} modFavs={modFavs} />
-        ))}
-      </div>
+      {properties.length > 0 ? (
+        <div className="todo-tarjetas-prop">
+          {properties.map((property) => (
+            <Cards property={property} modFavs={modFavs} />
+          ))}
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

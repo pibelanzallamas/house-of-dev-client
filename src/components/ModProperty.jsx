@@ -104,10 +104,10 @@ function ModProperty() {
             ></input>
             <label for={"country"}>País</label>
             <input
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
               id="country"
               type="text"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
               maxLength={15}
               required
             ></input>
@@ -115,7 +115,6 @@ function ModProperty() {
             <input
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              {...city}
               id={"city"}
               type="text"
               maxLength={15}

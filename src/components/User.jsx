@@ -1,39 +1,55 @@
 import axios from "axios";
-import Cards from "../commons/Cards";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import Navbar from "../components/Navbar";
-//import Appointments from "../components/Appointments";
 import { alerts } from "../utils/alerts";
+import Navbar from "../components/Navbar";
+import Cards from "../commons/Cards";
+import Appointments from "../components/Appointments";
 
 function User() {
   const user = useSelector((state) => state.user);
-  const [properties, setProperties] = useState([]);
-  const [modFavs, setModFavs] = useState(false);
-  const [name, setName] = useState(user.name);
-  const [email, setEmail] = useState(user.email);
-  const [telephone, setTelephone] = useState(user.telephone);
-  const [appointments, setAppointments] = useState([1, 2, 3, 4, 5]);
+  const uid = user.id;
+  const [favoritos, setFavoritos] = useState([]);
+  const [citas, setCitas] = useState([]);
+  const [estado, setEstado] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [telephone, setTelephone] = useState("");
 
-  function handleMovFavs() {
-    setModFavs(!modFavs);
+  //lee estado desde cards
+  function hanldeEstado() {
+    setEstado(!estado);
   }
 
+  //get user
+  useEffect(() => {
+    axios
+      .get(`/api/users/${uid}`)
+      .then((user) => {
+        setName(user.data.name);
+        setEmail(user.data.email);
+        setTelephone(user.data.telephone);
+      })
+      .catch((err) => console.log(err));
+  }, [user]);
+
+  //mod user
   function handleChange(e) {
     e.preventDefault();
+
     axios
       .put(`/api/users/${user.id}`, { name, email, telephone })
       .then((mod) => alerts("Ok!", "Modificó su perfil 😎", "success"))
       .catch((err) => alerts("Err", "Ingrese datos correctos 😖", "danger"));
   }
 
+  //get favs de user
   useEffect(() => {
     axios
       .get(`/api/favorites/${user.id}`)
-      .then((res) => setProperties(res.data))
+      .then((res) => setFavoritos(res.data))
       .catch((err) => console.log(err));
-  }, [modFavs]);
+  }, [estado, user]);
 
   return (
     <div>
@@ -53,9 +69,11 @@ function User() {
               <label> Nombre y Apellido </label>
               <br></br>
               <input
+                id="name"
+                type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                type="text"
+                minLength={3}
                 maxLength={25}
                 required
               ></input>
@@ -65,11 +83,13 @@ function User() {
               <label> Email </label>
               <br></br>
               <input
+                id="email"
+                type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                type="email"
+                minLength={5}
+                maxLength={25}
                 required
-                maxLength={45}
               ></input>
             </div>
 
@@ -77,48 +97,61 @@ function User() {
               <label> Telefono </label>
               <br></br>
               <input
+                id="telephone"
+                type="number"
                 value={telephone}
                 onChange={(e) => setTelephone(e.target.value)}
-                type="number"
-                required
                 min={10000}
                 max={9999999999}
+                required
               ></input>
             </div>
             {user.admin ? <label>Admin ✔️</label> : <></>}
-            <button className="boton-editar">EDITAR</button>
+            <button className="boton-editar" style={{ left: "86%" }}>
+              MODIFICAR
+            </button>
           </form>
         </div>
 
-        {properties.length > 0 ? (
+        {favoritos.length > 0 ? (
           <>
             <div className="home-titulo">
               <h2 className="linea1">FAVORITOS</h2>
             </div>
             <div className="todo-tarjetas-prop">
-              {properties.map((property, id) => (
+              {favoritos.map((favorito, id) => (
                 <div key={id} className="property-cards-container">
-                  <Cards property={property.property} modFavs={handleMovFavs} />
+                  <Cards property={favorito.property} modFavs={hanldeEstado} />
                 </div>
               ))}
             </div>
           </>
         ) : (
           <div className="home-titulo" style={{ border: "none" }}>
-            <h2 className="linea1">NO HAY FAVORITOS</h2>
+            <h2 className="linea1" style={{ marginRight: "1%" }}>
+              NO HAY FAVORITOS
+            </h2>
           </div>
-          // <div className="home-titulo">
-          //   <h2 className="linea1">NO HAY FAVORITOS</h2>
-          // </div>
         )}
-        <div className="home-titulo">
-          <h2 className="linea1">PRÓXIMAS CITAS</h2>
-        </div>
-        {/* <div className="todo-tarjetas-prop">
-          {appointments.map((app) => (
-            <Appointments property={app} />
-          ))}
-        </div> */}
+
+        {citas.length > 0 ? (
+          <>
+            <div className="home-titulo">
+              <h2 className="linea1">PRÓXIMAS CITAS</h2>
+            </div>
+            <div className="todo-tarjetas-prop">
+              {citas.map((app) => (
+                <Appointments property={app} /> //cancelar
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="home-titulo" style={{ border: "none" }}>
+            <h2 className="linea1" style={{ marginRight: "1%" }}>
+              NO HAY PRÓXIMAS CITAS
+            </h2>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import User from "./User";
 import Users from "./Users";
 import CreateProp from "./CreateProp";
 import Properties from "./Properties";
+import Appointments from "./Appointments";
 import AppointmentScheduler from "./AppointmentScheduler";
 
 function AppRoutes() {

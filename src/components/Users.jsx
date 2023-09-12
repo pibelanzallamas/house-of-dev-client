@@ -28,18 +28,25 @@ function Users() {
     });
   }
 
+  function handleScroll() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   return (
     <div>
       <Navbar />
       <div className="home">
         <div className="home-titulo">
-          <h2 className="linea1">Usuarios</h2>
+          <h2 className="linea1">USUARIOS</h2>
         </div>
         {users.length > 0 ? (
           <div className="property-list">
             {users.map((user) => (
               <>
-                <div className="user-datos">
+                <div className="user-datos" style={{ height: "310px" }}>
                   <form>
                     <img
                       src="https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png"
@@ -70,7 +77,7 @@ function Users() {
                       <button
                         className="boton-editar"
                         onClick={() => handleAdmin(user.id, user.name)}
-                        style={{ left: "80%" }}
+                        style={{ left: "79%" }}
                       >
                         ADMIN
                       </button>
@@ -81,7 +88,7 @@ function Users() {
                       <button
                         className="boton-editar "
                         onClick={() => handleDelete(user.id, user.name)}
-                        style={{ left: "88%" }}
+                        style={{ left: "87%" }}
                       >
                         ELIMINAR
                       </button>
@@ -95,6 +102,17 @@ function Users() {
         ) : (
           <></>
         )}
+        <div
+          style={{
+            position: "relative",
+            "margin-bottom": "7%",
+            "margin-top": "2%",
+          }}
+        >
+          <button className="onTop" onClick={handleScroll}>
+            IR A INICIO
+          </button>
+        </div>
       </div>
     </div>
   );

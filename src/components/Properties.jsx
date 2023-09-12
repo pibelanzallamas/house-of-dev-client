@@ -1,80 +1,211 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { alerts } from "../utils/alerts";
+import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 
 function Properties() {
   const [properties, setProperies] = useState([]);
-  const [modProp, setModProp] = useState(false);
-  const navigate = useNavigate();
+  const [estado, setEstado] = useState(false);
 
   useEffect(() => {
     axios
       .get("/api/properties/all")
       .then((all) => setProperies(all.data))
       .catch((err) => console.log(err));
-  }, [modProp]);
+  }, [estado]);
 
-  function handleMod(propId) {
-    navigate(`/properties/mod/${propId}`);
-  }
-
-  function hanldeDel(propId) {
-    axios.delete(`/api/properties/${propId}`).then(() => {
-      setModProp(!modProp);
-      alerts("Ok!", "Propiedad eliminada! 👍", "danger");
+  function handleScroll() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
     });
   }
 
   return (
     <div>
       <Navbar />
-
-      <div>
-        <h2 style={{ color: "blue" }}>Propiedades</h2>
-      </div>
-      {properties.length > 0 ? (
-        <div className="property-list">
-          {properties.map((property) => (
-            <div className="property-details" key={property.id}>
-              <img src={property.images} alt={property.name} />
-              <Link to={`/properties/${property.id}`}>
-                <h2 style={{ color: "blue" }}>{property.name}</h2>
-              </Link>
-              <button
-                onClick={() => {
-                  handleMod(property.id);
-                }}
-              >
-                Modificar!
-              </button>
-              <button
-                onClick={() => {
-                  hanldeDel(property.id);
-                }}
-              >
-                Eliminar!
-              </button>
-              <p>Dirección: {property.address}</p>
-              <p>País: {property.country}</p>
-              <p>Ciudad: {property.city}</p>
-              <p>Barrio: {property.neighborhood}</p>
-              <p>Cantidad de Baños: {property.bathrooms}</p>
-              <p>Cantidad de Cuartos: {property.rooms}</p>
-              <p>
-                Categoría:{" "}
-                {property.categories[0].toUpperCase() +
-                  property.categories.slice(1).toLowerCase()}
-              </p>
-              <p>Precio: {property.price}</p>
-              <p>{property.description}</p>
-            </div>
-          ))}
+      <div className="home">
+        <div className="home-titulo">
+          <h2 className="linea1">PROPIEDADES</h2>
         </div>
-      ) : (
-        <></>
-      )}
+        {properties.map((elemento) => (
+          <div className="property-card" style={{ "margin-bottom": "3%" }}>
+            <div className="user-datos" style={{ height: "880px" }}>
+              <form>
+                <img
+                  src={elemento.images}
+                  alt={elemento.name}
+                  style={{
+                    objectFit: "cover",
+                    width: "140px",
+                    height: "140px",
+                    border: "solid blue 1px",
+                    padding: "3px",
+                    "margin-left": "81%",
+                    "border-radius": "0%",
+                    "margin-bottom": "-15px",
+                  }}
+                />
+                <div className="inputName">
+                  <label htmlFor="name"> Nombre </label>
+                  <br></br>
+                  <input
+                    id="name"
+                    type="text"
+                    value={elemento.name}
+                    minLength={3}
+                    maxLength={25}
+                    required
+                  ></input>
+                </div>
+                <div className="inputEmail">
+                  <label htmlFor="address"> Dirección </label>
+                  <br></br>
+                  <input
+                    id="address"
+                    type="text"
+                    value={elemento.address}
+                    minLength={3}
+                    maxLength={25}
+                    required
+                  ></input>
+                </div>
+                <div className="inputTel">
+                  <label htmlFor="neighborhood"> Barrio </label>
+                  <br></br>
+                  <input
+                    id="neighborhood"
+                    type="text"
+                    value={elemento.neighborhood}
+                    minLength={3}
+                    maxLength={25}
+                    required
+                  ></input>
+                </div>
+                <div className="inputTel">
+                  <label htmlFor="city"> Ciudad </label>
+                  <br></br>
+                  <input
+                    id="city"
+                    type="text"
+                    value={elemento.city}
+                    minLength={3}
+                    maxLength={10}
+                    required
+                  ></input>
+                </div>
+                <div className="inputTel">
+                  <label htmlFor="country"> País </label>
+                  <br></br>
+                  <input
+                    id="country"
+                    type="text"
+                    value={elemento.country}
+                    minLength={3}
+                    maxLength={25}
+                    required
+                  ></input>
+                </div>
+                <div className="inputTel">
+                  <label htmlFor="bathrooms"> Baños </label>
+                  <br></br>
+                  <input
+                    id="bathrooms"
+                    type="number"
+                    value={elemento.bathrooms}
+                    min={1}
+                    max={15}
+                    required
+                  ></input>
+                </div>
+                <div className="inputTel">
+                  <label htmlFor="rooms"> Habitaciones </label>
+                  <br></br>
+                  <input
+                    id="rooms"
+                    type="number"
+                    value={elemento.rooms}
+                    min={1}
+                    max={20}
+                    required
+                  ></input>
+                </div>
+                <div className="inputTel">
+                  <label htmlFor="description"> Description </label>
+                  <br></br>
+                  <input
+                    id="description"
+                    type="text"
+                    value={elemento.description}
+                    minLength={3}
+                    maxLength={70}
+                    required
+                  ></input>
+                </div>
+                <div className="inputTel">
+                  <label htmlFor="disponibility"> Disponibilidad </label>
+                  <br></br>
+                  <input
+                    id="disponibility"
+                    type="text"
+                    value={elemento.disponibility}
+                    required
+                  ></input>
+                </div>
+                <div className="inputTel">
+                  <label htmlFor="categories"> Categoría </label>
+                  <br></br>
+                  <input
+                    id="categories"
+                    type="text"
+                    value={elemento.categories}
+                    required
+                  ></input>
+                </div>
+                <div className="inputTel">
+                  <label htmlFor="price"> Precio </label>
+                  <br></br>
+                  <strong
+                    style={{ fontSize: "20px", borderBottom: "solid 1px" }}
+                  >
+                    $
+                  </strong>
+                  <input
+                    id="price"
+                    type="number"
+                    value={elemento.price}
+                    style={{ width: "94.7%" }}
+                    required
+                  ></input>
+                </div>
+                <div className="inputTel">
+                  <label htmlFor="images"> Imagen </label>
+                  <br></br>
+                  <input
+                    id="images"
+                    type="url"
+                    value={elemento.images}
+                    required
+                  ></input>
+                </div>
+                <Link
+                  onClick={handleScroll}
+                  className="boton-mas"
+                  to={`/properties/${elemento.id}`}
+                  style={{ top: "92%", fontSize: "13px", left: "88%" }}
+                >
+                  VER MÁS
+                </Link>
+              </form>
+            </div>
+          </div>
+        ))}
+        <div style={{ position: "relative", "margin-bottom": "10%" }}>
+          <button className="onTop" onClick={handleScroll}>
+            IR A INICIO
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

@@ -460,7 +460,18 @@
   left: 88%;
   color: #123AC8;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+  background-color: #F7F3EE;
+}
+
+.onTop {
+  border: 1px solid #123AC8;
+  border-radius: 40px;
+  padding: 5px 15px;
+  position: absolute;
+  left: 45%;
+  color: #123AC8;
+  cursor: pointer;
+  background-color: #F7F3EE;
 }
 
 .container {
@@ -643,8 +654,9 @@
 
 .boton-like2 {
   position: absolute;
-  top: 91%;
-  left: 90%;
+  top: 89%;
+  left: 91%;
+  padding: 0;
   transform: scale(0.5);
 }
 
@@ -662,6 +674,18 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: #F7F3EE;
   width: "100%";
+}
+
+.boton-drop {
+  position: absolute;
+  top: 9%;
+  left: 87%;
+  border: 1px solid #123AC8;
+  border-radius: 40px;
+  padding: 5px 15px;
+  color: #123AC8;
+  cursor: pointer;
+  background-color: #F7F3EE;
 }
 
 @font-face {

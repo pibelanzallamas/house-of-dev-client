@@ -30,21 +30,21 @@ function Login() {
       });
   }
 
-  function handleGoogleLoginSuccess(response) {
-    const { access_token } = response;
-    // Realiza acciones adicionales después del inicio de sesión exitoso con Google.
-    // Por ejemplo, puedes enviar el token de acceso al servidor para verificar la autenticación con Google.
-    axios
-      .post("/api/users/google-login", { access_token })
-      .then((payload) => {
-        alerts("Aloha!", `Welcome ${payload.data.name} 🏝`, "success");
-        dispatch(setUser(payload.data));
-        navigate("/");
-      })
-      .catch(() => {
-        alerts("Nope!", "Error en la autenticación con Google ☠️", "danger");
-      });
-  }
+  // function handleGoogleLoginSuccess(response) {
+  //   const { access_token } = response;
+  //   // Realiza acciones adicionales después del inicio de sesión exitoso con Google.
+  //   // Por ejemplo, puedes enviar el token de acceso al servidor para verificar la autenticación con Google.
+  //   axios
+  //     .post("/api/users/google-login", { access_token })
+  //     .then((payload) => {
+  //       alerts("Aloha!", `Welcome ${payload.data.name} 🏝`, "success");
+  //       dispatch(setUser(payload.data));
+  //       navigate("/");
+  //     })
+  //     .catch(() => {
+  //       alerts("Nope!", "Error en la autenticación con Google ☠️", "danger");
+  //     });
+  // }
 
   return (
     <div className="containerLogin">
@@ -89,7 +89,7 @@ function Login() {
             <p>¿Registrarse?</p>
           </Link>
 
-          <OAuth2Login
+          {/* <OAuth2Login
             provider="google"
             clientId="413054924757-23310blgvskehh7c4o6j2pis1fqpgv6i.apps.googleusercontent.com"
             onSuccess={handleGoogleLoginSuccess}
@@ -99,7 +99,7 @@ function Login() {
             className="buttonGoogle"
           >
             Ingresar con Google
-          </OAuth2Login>
+          </OAuth2Login> */}
 
           <button className="buttonLogin">Login</button>
         </form>

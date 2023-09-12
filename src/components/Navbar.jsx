@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,6 +9,13 @@ function Navbar() {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    axios
+      .post("/api/users/me")
+      .then((cok) => dispatch(setUser(cok.data)))
+      .catch((err) => console.log(err));
+  }, [dispatch]);
 
   function handleLogout(e) {
     e.preventDefault();

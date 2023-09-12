@@ -1,21 +1,7 @@
-import axios from "axios";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setUser } from "../state/userState";
 import Navbar from "../components/Navbar";
 import Content from "./Content";
 
 function Home() {
-  const dispatch = useDispatch();
-
-  //me
-  useEffect(() => {
-    axios
-      .post("/api/users/me")
-      .then((cok) => dispatch(setUser(cok.data)))
-      .catch((err) => console.log(err));
-  }, [dispatch]);
-
   return (
     <div>
       <Navbar />
