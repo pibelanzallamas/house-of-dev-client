@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { alerts } from "../utils/alerts";
 import Navbar from "../components/Navbar";
 import Cards from "../commons/Cards";
-import Appointments from "../commons/Appointments";
+import AppointmentsCards from "../commons/AppointmentsCards";
 
 function User() {
   const user = useSelector((state) => state.user);
@@ -149,7 +149,7 @@ function User() {
             </div>
             <div className="todo-tarjetas-prop">
               {citas.map((app) => (
-                <Appointments cita={app} modFavs={hanldeEstado} /> //cancelar
+                <AppointmentsCards cita={app} modFavs={hanldeEstado} /> //cancelar
               ))}
             </div>
           </>

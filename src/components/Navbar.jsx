@@ -62,6 +62,7 @@ function Navbar() {
                 <>
                   <Link to={"/users"}> Ver Usuarios</Link>
                   <Link to={"/properties"}> Ver Propiedades</Link>
+                  <Link to={"/appointments"}> Ver Citas </Link>
                   <Link to={"/properties/register"}>Agregar propiedades</Link>
                   <Link to={`/users/${user.id}`}> Mi perfil</Link>
                   <Link onClick={handleLogout}> Salir</Link>

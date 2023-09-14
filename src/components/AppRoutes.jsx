@@ -9,6 +9,7 @@ import Users from "./Users";
 import Properties from "./Properties";
 import CreateProp from "./CreateProp";
 import CreateAppo from "./CreateAppo";
+import Appointments from "./Appointments";
 
 function AppRoutes() {
   return (
@@ -22,6 +23,7 @@ function AppRoutes() {
       <Route path="/properties" element={<Properties />} />
       <Route path="/properties/register" element={<CreateProp />} />
       <Route path="/appointments/register/:id" element={<CreateAppo />} />
+      <Route path="/appointments" element={<Appointments />} />
     </Routes>
   );
 }
