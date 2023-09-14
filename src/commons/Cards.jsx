@@ -10,7 +10,9 @@ function Cards({ property, modFavs }) {
   const uid = user.id;
   const pid = property.id;
   const [like, setLike] = useState(false);
+  const [date, setDate] = useState(false);
 
+  //get 1 fav
   useEffect(() => {
     axios.get("/api/favorites/find", { params: { uid, pid } }).then((fav) => {
       if (fav.data.pid) setLike(true);
@@ -67,7 +69,16 @@ function Cards({ property, modFavs }) {
     });
   }
 
-  function handleDate() {}
+  //get date
+  useEffect(() => {
+    axios
+      .get("/api/appointments/find/one", { params: { uid, pid } })
+      .then((data) => {
+        if (data.data.pid) setDate(true);
+        else setDate(false);
+      })
+      .catch((err) => console.log(err));
+  }, [user]);
 
   return (
     <>
@@ -114,9 +125,15 @@ function Cards({ property, modFavs }) {
                 <img src="/boton-cora.png" />
               </Link>
             )}
-            <Link className="boton-cita" onClick={handleDate}>
-              <img src="/boton-cita.png" />
-            </Link>
+            {date ? (
+              <Link className="boton-cita" to={`/appointments/register/${pid}`}>
+                <img src="/boton-cita2.png" />
+              </Link>
+            ) : (
+              <Link className="boton-cita" to={`/appointments/register/${pid}`}>
+                <img src="/boton-cita.png" />
+              </Link>
+            )}
             <Link
               onClick={handleScroll}
               className="boton-mas"

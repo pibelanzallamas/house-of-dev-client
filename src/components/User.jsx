@@ -4,17 +4,17 @@ import { useSelector } from "react-redux";
 import { alerts } from "../utils/alerts";
 import Navbar from "../components/Navbar";
 import Cards from "../commons/Cards";
-import Appointments from "../components/Appointments";
+import Appointments from "../commons/Appointments";
 
 function User() {
   const user = useSelector((state) => state.user);
   const uid = user.id;
-  const [favoritos, setFavoritos] = useState([]);
-  const [citas, setCitas] = useState([]);
-  const [estado, setEstado] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [telephone, setTelephone] = useState("");
+  const [estado, setEstado] = useState(false);
+  const [favoritos, setFavoritos] = useState([]);
+  const [citas, setCitas] = useState([]);
 
   //lee estado desde cards
   function hanldeEstado() {
@@ -50,6 +50,14 @@ function User() {
       .then((res) => setFavoritos(res.data))
       .catch((err) => console.log(err));
   }, [estado, user]);
+
+  //get citas
+  useEffect(() => {
+    axios
+      .get(`/api/appointments/${uid}`)
+      .then((all) => setCitas(all.data))
+      .catch((err) => console.log(err));
+  }, [estado]);
 
   return (
     <div>
@@ -141,7 +149,7 @@ function User() {
             </div>
             <div className="todo-tarjetas-prop">
               {citas.map((app) => (
-                <Appointments property={app} /> //cancelar
+                <Appointments cita={app} modFavs={hanldeEstado} /> //cancelar
               ))}
             </div>
           </>

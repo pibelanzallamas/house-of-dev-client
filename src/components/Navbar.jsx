@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 import axios from "axios";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../state/userState";
@@ -9,6 +9,13 @@ function Navbar() {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const condicion = {
+    backgroundColor: user.admin ? "#123AC8" : "red",
+    color: "white",
+    display: "flex",
+    justifyContent: "space-between",
+    padding: "1rem",
+  };
 
   useEffect(() => {
     axios
@@ -38,15 +45,7 @@ function Navbar() {
   }
 
   return (
-    <nav
-      style={{
-        backgroundColor: "red",
-        color: "white",
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "1rem",
-      }}
-    >
+    <nav style={condicion}>
       <div className="navbar">
         <div className="navbar-logo">
           <Link to="/">

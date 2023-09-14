@@ -68,7 +68,7 @@
   height: 33px;
   width: 227px;
   position: absolute;
-  top: 57%;
+  top: 55%;
   left: 10%;
 }
 .buttonMailLog {
@@ -78,7 +78,7 @@
   position: absolute;
   height: 20px;
   width: 20px;
-  top: 18%;
+  top: 21%;
   left: 3%;
 }
 .textInputALog {
@@ -88,7 +88,7 @@
   background-color: transparent;
   border: none;
   outline: none;
-  color: #123ac8;
+  color: #5366d1;
   font-family: Montserrat;
   font-size: 10px;
   width: 190px;
@@ -100,7 +100,7 @@
   height: 33px;
   width: 227px;
   position: absolute;
-  top: 67%;
+  top: 63.5%;
   left: 10%;
 }
 .buttonLockLog {
@@ -110,7 +110,7 @@
   position: absolute;
   height: 20px;
   width: 20px;
-  top: 18%;
+  top: 20%;
   left: 3%;
 }
 .textInputBLog {
@@ -120,35 +120,37 @@
   background-color: transparent;
   border: none;
   outline: none;
-  color: #123ac8;
+  color: #5366d1;
   font-family: Montserrat;
   font-size: 10px;
   width: 190px;
 }
 .loginConteiner p {
-  color: #123ac8;
+  color: #5366d1;
   font-size: 11px;
   position: absolute;
   top: 74%;
   left: 13%;
 }
 .buttonLogin {
-  border: 1px solid #2344bd;
+  border: 1px solid #5366d1;
   border-radius: 40px;
   background-color: transparent;
   padding: 5px 15px;
   position: absolute;
-  top: 87%;
-  left: 11%;
+  top: 85.5%;
+  left: 64%;
   font-family: Montserrat;
-  color: #123ac8;
+  font-size: 12px;
+  color: #5366d1;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
 }
 .registrarse {
   position: absolute;
-  top: 74%;
-  left: 13%;
+  top: 69.3%;
+  left: 11.5%;
+  color: #5366d1;
 }
 
 .buttonGoogle {

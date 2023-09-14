@@ -1,15 +1,18 @@
 import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { alerts } from "../utils/alerts";
 import useInput from "../hooks/useInput";
 import Navbar from "./Navbar";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 function Property() {
   const user = useSelector((state) => state.user);
   const uid = user.id;
-  const pid = useParams().id;
+  const pid = Number(useParams().id);
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [country, setCountry] = useState("");
@@ -24,12 +27,16 @@ function Property() {
   const [disponibility, setDisponibility] = useState("");
   const [estado, setEstado] = useState(false);
   const [like, setLike] = useState(false);
+  const [date, setDate] = useState(false);
   const [reviews, setReviews] = useState([]);
   const comentario = useInput("");
   const valoracion = useInput(1);
   const navigate = useNavigate();
   const dispo = ["Alquiler", "Venta"];
   const cate = ["Ph", "Local", "Terreno", "Casa", "Departamento"];
+
+  const [fecha, setFecha] = useState(null);
+  const referencia = useRef(null);
 
   //get propiedad
   useEffect(() => {
@@ -137,6 +144,17 @@ function Property() {
     });
   }, [estado, user]);
 
+  //get date
+  useEffect(() => {
+    axios
+      .get("/api/appointments/find/one", { params: { uid, pid } })
+      .then((data) => {
+        if (data.data.pid) setDate(true);
+        else setDate(false);
+      })
+      .catch((err) => console.log(err));
+  }, [estado, user]);
+
   //likea
   function hanldeLike() {
     axios
@@ -229,6 +247,14 @@ function Property() {
       });
   }
 
+  function handleClick() {
+    referencia.current.setOpen(true);
+  }
+
+  // function handleDateChange(date) {
+  //   setFecha(date);
+  // }
+
   return (
     <div>
       <Navbar />
@@ -255,7 +281,6 @@ function Property() {
                   "margin-bottom": "-15px",
                 }}
               />
-
               <div className="inputName">
                 <label htmlFor="name"> Nombre </label>
                 <br></br>
@@ -269,7 +294,6 @@ function Property() {
                   required
                 ></input>
               </div>
-
               <div className="inputEmail">
                 <label htmlFor="address"> Dirección </label>
                 <br></br>
@@ -283,7 +307,6 @@ function Property() {
                   required
                 ></input>
               </div>
-
               <div className="inputTel">
                 <label htmlFor="neighborhood"> Barrio </label>
                 <br></br>
@@ -297,7 +320,6 @@ function Property() {
                   required
                 ></input>
               </div>
-
               <div className="inputTel">
                 <label htmlFor="city"> Ciudad </label>
                 <br></br>
@@ -311,7 +333,6 @@ function Property() {
                   required
                 ></input>
               </div>
-
               <div className="inputTel">
                 <label htmlFor="country"> País </label>
                 <br></br>
@@ -325,7 +346,6 @@ function Property() {
                   required
                 ></input>
               </div>
-
               <div className="inputTel">
                 <label htmlFor="bathrooms"> Baños </label>
                 <br></br>
@@ -339,7 +359,6 @@ function Property() {
                   required
                 ></input>
               </div>
-
               <div className="inputTel">
                 <label htmlFor="rooms"> Habitaciones </label>
                 <br></br>
@@ -353,7 +372,6 @@ function Property() {
                   required
                 ></input>
               </div>
-
               <div className="inputTel">
                 <label htmlFor="description"> Description </label>
                 <br></br>
@@ -367,7 +385,6 @@ function Property() {
                   required
                 ></input>
               </div>
-
               <div className="inputTel">
                 <label htmlFor="disponibility"> Disponibilidad </label>
                 <br></br>
@@ -380,7 +397,6 @@ function Property() {
                   required
                 ></input>
               </div>
-
               <div className="inputTel">
                 <label htmlFor="categories"> Categoría </label>
                 <br></br>
@@ -393,7 +409,6 @@ function Property() {
                   required
                 ></input>
               </div>
-
               <div className="inputTel">
                 <label htmlFor="price"> Precio </label>
                 <br></br>
@@ -410,57 +425,61 @@ function Property() {
                   required
                 ></input>
               </div>
-
-              <div className="inputTel">
-                <label htmlFor="images"> Imagen </label>
-                <br></br>
-                <input
-                  id="images"
-                  type="url"
-                  value={images}
-                  onChange={(e) => setImages(e.target.value)}
-                  required
-                ></input>
-              </div>
-
               {user.admin ? (
                 <>
+                  <div className="inputTel">
+                    <label htmlFor="images"> Imagen </label>
+                    <br></br>
+                    <input
+                      id="images"
+                      type="url"
+                      value={images}
+                      onChange={(e) => setImages(e.target.value)}
+                      required
+                    ></input>
+                  </div>
                   <button
                     className="boton-editar"
-                    //onClick={(e) => handleMod(e)}
-                    style={{ left: "70%", top: "92%" }}
+                    style={{ left: "62%", top: "92%" }}
                   >
                     MODIFICAR
                   </button>
                   <button
                     className="boton-editar "
                     onClick={(e) => hanldeDel(e)}
-                    style={{ left: "82%", top: "92%" }}
+                    style={{ left: "75%", top: "92%" }}
                   >
                     ELIMINAR
                   </button>
-                  {like ? (
-                    <Link className="boton-like2" onClick={hanldeDislike}>
-                      <img src="/boton-cora2.png" />
-                    </Link>
-                  ) : (
-                    <Link className="boton-like2" onClick={hanldeLike}>
-                      <img src="/boton-cora.png" />
-                    </Link>
-                  )}
                 </>
               ) : (
-                <>
-                  {like ? (
-                    <Link className="boton-like2" onClick={hanldeDislike}>
-                      <img src="/boton-cora2.png" />
-                    </Link>
-                  ) : (
-                    <Link className="boton-like2" onClick={hanldeLike}>
-                      <img src="/boton-cora.png" />
-                    </Link>
-                  )}
-                </>
+                <></>
+              )}
+              {like ? (
+                <Link className="boton-like2" onClick={hanldeDislike}>
+                  <img src="/boton-cora2.png" />
+                </Link>
+              ) : (
+                <Link className="boton-like2" onClick={hanldeLike}>
+                  <img src="/boton-cora.png" />
+                </Link>
+              )}
+              {date ? (
+                <Link
+                  className="boton-like2"
+                  style={{ left: "90.5%" }}
+                  to={`/appointments/register/${pid}`}
+                >
+                  <img src="/boton-cita2.png" />
+                </Link>
+              ) : (
+                <Link
+                  className="boton-like2"
+                  style={{ left: "90.5%" }}
+                  to={`/appointments/register/${pid}`}
+                >
+                  <img src="/boton-cita.png" />
+                </Link>
               )}
             </form>
           </div>

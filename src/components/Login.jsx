@@ -101,7 +101,7 @@ function Login() {
             Ingresar con Google
           </OAuth2Login> */}
 
-          <button className="buttonLogin">Login</button>
+          <button className="buttonLogin">Log In</button>
         </form>
       </div>
     </div>

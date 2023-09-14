@@ -3,13 +3,12 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
-import Property from "./Property";
 import User from "./User";
+import Property from "./Property";
 import Users from "./Users";
-import CreateProp from "./CreateProp";
 import Properties from "./Properties";
-import Appointments from "./Appointments";
-import AppointmentScheduler from "./AppointmentScheduler";
+import CreateProp from "./CreateProp";
+import CreateAppo from "./CreateAppo";
 
 function AppRoutes() {
   return (
@@ -22,8 +21,7 @@ function AppRoutes() {
       <Route path="/users/" element={<Users />} />
       <Route path="/properties" element={<Properties />} />
       <Route path="/properties/register" element={<CreateProp />} />
-      <Route path="/properties/mod/:id" element={<Property />} />
-      <Route path="/appointments/register" element={<AppointmentScheduler />} />
+      <Route path="/appointments/register/:id" element={<CreateAppo />} />
     </Routes>
   );
 }

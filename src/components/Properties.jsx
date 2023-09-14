@@ -7,6 +7,7 @@ function Properties() {
   const [properties, setProperies] = useState([]);
   const [estado, setEstado] = useState(false);
 
+  //get properties
   useEffect(() => {
     axios
       .get("/api/properties/all")

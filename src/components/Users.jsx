@@ -7,6 +7,7 @@ function Users() {
   const [users, setUsers] = useState([]);
   const [modUsers, setModUser] = useState(false);
 
+  //get all user
   useEffect(() => {
     axios
       .get("/api/users/all")
@@ -14,6 +15,7 @@ function Users() {
       .catch((err) => console.log(err));
   }, [modUsers]);
 
+  //del user
   function handleDelete(userId, userName) {
     axios.delete(`/api/users/${userId}`).then(() => {
       setModUser(!modUsers);
@@ -21,6 +23,7 @@ function Users() {
     });
   }
 
+  //admin user
   function handleAdmin(userId, userName) {
     axios.put(`/api/users/${userId}`, { admin: true }).then(() => {
       setModUser(!modUsers);
@@ -28,6 +31,7 @@ function Users() {
     });
   }
 
+  //scroll up
   function handleScroll() {
     window.scrollTo({
       top: 0,

@@ -11,6 +11,7 @@ function Register() {
   const password = useInput("");
   const navigate = useNavigate();
 
+  //create user
   function handleRegister(e) {
     e.preventDefault();
 
@@ -76,6 +77,7 @@ function Register() {
               min={10000}
               max={9999999999}
               {...telephone}
+              style={{ top: "29%" }}
             ></input>
           </div>
 
