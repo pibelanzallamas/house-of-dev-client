@@ -31,20 +31,20 @@ function Login() {
     //navigate("/");
   }
 
-  useEffect(() => {
-    google.accounts.id.initialize({
-      client_id:
-        "413054924757-e1sknitkpf313733h32aq5mfhse3f1j8.apps.googleusercontent.com",
-      callback: handleCallbackResponse,
-    });
+  // useEffect(() => {
+  //   google.accounts.id.initialize({
+  //     client_id:
+  //       "413054924757-e1sknitkpf313733h32aq5mfhse3f1j8.apps.googleusercontent.com",
+  //     callback: handleCallbackResponse,
+  //   });
 
-    google.accounts.id.renderButton(document.getElementById("google-login"), {
-      theme: "outline",
-      size: "small",
-    });
+  //   google.accounts.id.renderButton(document.getElementById("google-login"), {
+  //     theme: "outline",
+  //     size: "small",
+  //   });
 
-    google.accounts.id.prompt();
-  }, []);
+  //   google.accounts.id.prompt();
+  // }, []);
 
   function handleLogin(e) {
     e.preventDefault();

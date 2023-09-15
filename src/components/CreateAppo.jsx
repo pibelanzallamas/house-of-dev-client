@@ -46,7 +46,14 @@ function CreateAppo() {
   }, [user, pid]);
 
   //sent email
-  function sendEmail() {}
+  function sendEmail(date) {
+    axios
+      .post(`/api/users/send/${user.email}`, { date })
+      .then(() =>
+        alerts("Exito!", "Mail de confirmación enviado ✉️", "success")
+      )
+      .catch(() => alerts("Rayos!", "Mail no puso enviarse ☠️", "warning"));
+  }
 
   //create appointment
   function handleDate() {
@@ -54,7 +61,7 @@ function CreateAppo() {
       .post("/api/appointments/register", { uid, pid, date: startDate })
       .then((data) => {
         if (data.data[1]) {
-          sendEmail();
+          sendEmail(startDate);
           alerts("Exito!", "Cita agendada correctamente 📝", "success");
           navigate(`/users/${uid}`);
         } else {
