@@ -4,7 +4,6 @@ import "animate.css/animate.min.css";
 import { alerts } from "../utils/alerts";
 
 function AppointmentsCards({ cita, modFavs }) {
-
   //eliminar cita
   function handleDel(id) {
     axios
@@ -54,7 +53,7 @@ function AppointmentsCards({ cita, modFavs }) {
             </div>
           </div>
           <div className="rectangulo-dos">
-            <p style={{ top: "-6px" }}>
+            <p style={{ top: "-6px", marginRight: "2%" }}>
               {cita.property.address}, {cita.property.neighborhood},{" "}
               {cita.property.city}, {cita.property.country}
             </p>

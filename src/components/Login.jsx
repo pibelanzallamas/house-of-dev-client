@@ -4,13 +4,47 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../state/userState";
 import { useNavigate, Link } from "react-router-dom";
 import { alerts } from "../utils/alerts";
-import OAuth2Login from "react-oauth2";
+import { useEffect, useState } from "react";
+import jwt_decode from "jwt-decode";
 
 function Login() {
   const email = useInput("");
   const password = useInput("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  function handleCallbackResponse(response) {
+    const token = response.credential;
+
+    const decode = jwt_decode(token);
+
+    console.log(decode);
+
+    //alerts("Aloha!", `Welcome ${googleState.name} 🏝`, "success");
+    // dispatch(
+    //   setUser({
+    //     name: googleState.name,
+    //     email: googleState.email,
+    //     id: googleState.nbf,
+    //   })
+    // );
+    //navigate("/");
+  }
+
+  useEffect(() => {
+    google.accounts.id.initialize({
+      client_id:
+        "413054924757-e1sknitkpf313733h32aq5mfhse3f1j8.apps.googleusercontent.com",
+      callback: handleCallbackResponse,
+    });
+
+    google.accounts.id.renderButton(document.getElementById("google-login"), {
+      theme: "outline",
+      size: "small",
+    });
+
+    google.accounts.id.prompt();
+  }, []);
 
   function handleLogin(e) {
     e.preventDefault();
@@ -29,22 +63,6 @@ function Login() {
         alerts("Nope!", "Email o password incorrectos ☠️", "danger");
       });
   }
-
-  // function handleGoogleLoginSuccess(response) {
-  //   const { access_token } = response;
-  //   // Realiza acciones adicionales después del inicio de sesión exitoso con Google.
-  //   // Por ejemplo, puedes enviar el token de acceso al servidor para verificar la autenticación con Google.
-  //   axios
-  //     .post("/api/users/google-login", { access_token })
-  //     .then((payload) => {
-  //       alerts("Aloha!", `Welcome ${payload.data.name} 🏝`, "success");
-  //       dispatch(setUser(payload.data));
-  //       navigate("/");
-  //     })
-  //     .catch(() => {
-  //       alerts("Nope!", "Error en la autenticación con Google ☠️", "danger");
-  //     });
-  // }
 
   return (
     <div className="containerLogin">
@@ -82,25 +100,11 @@ function Login() {
             ></input>
           </div>
 
-          {/* <Link to="/forget">
-            <p>¿Olvidaste tu contraseña?</p>
-          </Link> */}
           <Link className="registrarse" to="/register">
             <p>¿Registrarse?</p>
           </Link>
 
-          {/* <OAuth2Login
-            provider="google"
-            clientId="413054924757-23310blgvskehh7c4o6j2pis1fqpgv6i.apps.googleusercontent.com"
-            onSuccess={handleGoogleLoginSuccess}
-            onError={(error) =>
-              console.error("Error de autenticación con Google", error)
-            }
-            className="buttonGoogle"
-          >
-            Ingresar con Google
-          </OAuth2Login> */}
-
+          <div id="google-login"></div>
           <button className="buttonLogin">Log In</button>
         </form>
       </div>

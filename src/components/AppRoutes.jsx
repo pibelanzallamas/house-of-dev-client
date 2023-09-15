@@ -21,9 +21,9 @@ function AppRoutes() {
       <Route path="/properties/:id" element={<Property />} />
       <Route path="/users/" element={<Users />} />
       <Route path="/properties" element={<Properties />} />
+      <Route path="/appointments" element={<Appointments />} />
       <Route path="/properties/register" element={<CreateProp />} />
       <Route path="/appointments/register/:id" element={<CreateAppo />} />
-      <Route path="/appointments" element={<Appointments />} />
     </Routes>
   );
 }

@@ -436,7 +436,6 @@
 }
 .user-datos input {
   background-color: #F7F3EE;
-  padding-bottom: 8px;
   border: none;
   color: #123AC8;
   font-weight: 600;
@@ -445,8 +444,8 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  padding-right: 20px;
   margin-bottom: 10px;
+  margin-top: 2px;
   border-bottom: 1px solid #123AC8;
 }
 .user-datos input:focus {
@@ -729,6 +728,66 @@
   padding: 10px;
   font-size: 14px;
   font-weight: 500;
+}
+
+.search-div {
+  padding: 2%;
+  margin: 0;
+  margin-top: -3px;
+  box-sizing: border-box;
+  position: relative;
+  height: 67px;
+}
+
+.search-div input {
+  color: #123AC8;
+  font-family: montserrat;
+  background-color: #F7F3EE;
+  font-size: 14px;
+  font-weight: 400;
+  border: solid #123AC8 2px;
+  border-radius: 40px;
+  padding: 1% 2%;
+  width: 30%;
+  margin: 0;
+  box-sizing: border-box;
+  position: absolute;
+  left: 37%;
+  top: 15%;
+  outline: none;
+}
+.inputSearch::placeholder {
+  color: #123AC8;
+}
+
+.select {
+  background-color: transparent;
+  border: none;
+  font-family: montserrat;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  color: #123AC8;
+  margin-right: 4px;
+  font-size: 14px;
+  position: absolute;
+  top: 32%;
+  outline: none;
+}
+.a {
+  left: 1.6%;
+}
+
+.b {
+  left: 14.6%;
+}
+
+.c {
+  left: 24.6%;
+}
+
+.d {
+  left: 70%;
 }
 
 @font-face {

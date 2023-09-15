@@ -12,13 +12,24 @@ function Cards({ property, modFavs }) {
   const [like, setLike] = useState(false);
   const [date, setDate] = useState(false);
 
-  //get 1 fav
+  //check fav
   useEffect(() => {
     axios.get("/api/favorites/find", { params: { uid, pid } }).then((fav) => {
       if (fav.data.pid) setLike(true);
       else setLike(false);
     });
   }, [like, pid, uid]);
+
+  //check date
+  useEffect(() => {
+    axios
+      .get("/api/appointments/find/one", { params: { uid, pid } })
+      .then((data) => {
+        if (data.data.pid) setDate(true);
+        else setDate(false);
+      })
+      .catch((err) => console.log(err));
+  }, [user]);
 
   function hanldeLike() {
     axios
@@ -69,17 +80,6 @@ function Cards({ property, modFavs }) {
     });
   }
 
-  //get date
-  useEffect(() => {
-    axios
-      .get("/api/appointments/find/one", { params: { uid, pid } })
-      .then((data) => {
-        if (data.data.pid) setDate(true);
-        else setDate(false);
-      })
-      .catch((err) => console.log(err));
-  }, [user]);
-
   return (
     <>
       <div id={property.id} className="todo-tarjeta">
@@ -113,7 +113,11 @@ function Cards({ property, modFavs }) {
             </div>
           </div>
           <div className="rectangulo-dos">
-            <p>{property.description}</p>
+            <p>
+              {property.description.length > 67
+                ? property.description.slice(0, 65) + "..."
+                : property.description}
+            </p>
           </div>
           <div className="rectangulo-tres">
             {like ? (

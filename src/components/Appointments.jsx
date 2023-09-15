@@ -86,7 +86,7 @@ function Appointments() {
                   </div>
                 </div>
                 <div className="rectangulo-dos">
-                  <p style={{ top: "-6px" }}>
+                  <p style={{ top: "-6px", marginRight: "2%" }}>
                     {elemento.property.address},{" "}
                     {elemento.property.neighborhood}, {elemento.property.city},{" "}
                     {elemento.property.country}

@@ -9,6 +9,7 @@ import es from "date-fns/locale/es";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import { alerts } from "../utils/alerts";
+import AppointmentsCards from "../commons/AppointmentsCards";
 
 function CreateAppo() {
   const pid = useParams().id;
@@ -31,7 +32,7 @@ function CreateAppo() {
       .catch((err) => console.log(err));
   }, [user, pid]);
 
-  //get appo
+  //check Date
   useEffect(() => {
     axios
       .get("/api/appointments/find/one", { params: { uid, pid } })
@@ -44,23 +45,31 @@ function CreateAppo() {
       .catch((err) => console.log(err));
   }, [user, pid]);
 
+  //sent email
+  function sendEmail() {}
+
   //create appointment
   function handleDate() {
     axios
       .post("/api/appointments/register", { uid, pid, date: startDate })
       .then((data) => {
         if (data.data[1]) {
-          alerts("Exito!", "Logró guardar la cita correctamente 📝", "success");
+          sendEmail();
+          alerts("Exito!", "Cita agendada correctamente 📝", "success");
           navigate(`/users/${uid}`);
         } else {
           alerts(
-            "Ohno!",
-            "Lamentablemente, este horario ya esta reservado 😇",
+            "Oops!",
+            "Lo siento, este horario ya está reservado 😇",
             "warning"
           );
         }
       })
       .catch((err) => console.log(err));
+  }
+
+  function handleChange() {
+    navigate(`/users/${uid}`);
   }
 
   registerLocale("es", es);
@@ -82,10 +91,17 @@ function CreateAppo() {
         </div>
 
         {date ? (
-          <div className="home-titulo" style={{ border: "none" }}>
-            <h2 className="linea1" style={{ marginRight: "1%" }}>
-              USTED YA TIENE CITA
-            </h2>
+          <div>
+            <div className="appo-card" style={{ width: "470px" }}>
+              <div className="home-titulo" style={{ border: "none" }}>
+                <h2 className="linea1" style={{ fontSize: "18px" }}>
+                  Usted ya tiene cita
+                </h2>
+              </div>
+              <div className="o">
+                <AppointmentsCards cita={appo} modFavs={handleChange} />
+              </div>
+            </div>
           </div>
         ) : (
           <div>

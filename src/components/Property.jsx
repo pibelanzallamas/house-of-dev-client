@@ -82,6 +82,7 @@ function Property() {
         if (mod.data[0] === 1) {
           setEstado(!estado);
           alerts("Ok!", "La propiedad se modificó 👍", "success");
+          navigate("/");
         } else {
           alerts("Ohoh!", "Ingrese datos validos 😵", "warning");
         }
@@ -381,7 +382,7 @@ function Property() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   minLength={3}
-                  maxLength={70}
+                  maxLength={140}
                   required
                 ></input>
               </div>

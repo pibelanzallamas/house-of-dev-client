@@ -107,7 +107,7 @@ function Properties() {
                   type="text"
                   required
                   minLength={3}
-                  maxLength={25}
+                  maxLength={20}
                 ></input>
               </div>
 
@@ -119,7 +119,7 @@ function Properties() {
                   type="text"
                   {...neighborhood}
                   minLength={3}
-                  maxLength={25}
+                  maxLength={20}
                   required
                 ></input>
               </div>
@@ -132,7 +132,7 @@ function Properties() {
                   type="text"
                   {...city}
                   minLength={3}
-                  maxLength={25}
+                  maxLength={20}
                   required
                 ></input>
               </div>
@@ -145,7 +145,7 @@ function Properties() {
                   type="text"
                   {...country}
                   minLength={3}
-                  maxLength={25}
+                  maxLength={20}
                   required
                 ></input>
               </div>
