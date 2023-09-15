@@ -3,48 +3,15 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "../state/userState";
 import { useNavigate, Link } from "react-router-dom";
-import { alerts } from "../utils/alerts";
-import { useEffect, useState } from "react";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
+import { alerts } from "../utils/alerts";
 
 function Login() {
   const email = useInput("");
   const password = useInput("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  function handleCallbackResponse(response) {
-    const token = response.credential;
-
-    const decode = jwt_decode(token);
-
-    console.log(decode);
-
-    //alerts("Aloha!", `Welcome ${googleState.name} 🏝`, "success");
-    // dispatch(
-    //   setUser({
-    //     name: googleState.name,
-    //     email: googleState.email,
-    //     id: googleState.nbf,
-    //   })
-    // );
-    //navigate("/");
-  }
-
-  // useEffect(() => {
-  //   google.accounts.id.initialize({
-  //     client_id:
-  //       "413054924757-e1sknitkpf313733h32aq5mfhse3f1j8.apps.googleusercontent.com",
-  //     callback: handleCallbackResponse,
-  //   });
-
-  //   google.accounts.id.renderButton(document.getElementById("google-login"), {
-  //     theme: "outline",
-  //     size: "small",
-  //   });
-
-  //   google.accounts.id.prompt();
-  // }, []);
 
   function handleLogin(e) {
     e.preventDefault();
@@ -88,7 +55,6 @@ function Login() {
               required
             ></input>
           </div>
-
           <div className="inputBLogin">
             <div className="buttonLockLog"></div>
             <input
@@ -99,14 +65,34 @@ function Login() {
               required
             ></input>
           </div>
-
           <Link className="registrarse" to="/register">
             <p>¿Registrarse?</p>
           </Link>
-
-          <div id="google-login"></div>
           <button className="buttonLogin">Log In</button>
         </form>
+      </div>
+      <div style={{ left: "82%", position: "absolute" }}>
+        <GoogleOAuthProvider clientId="413054924757-e1sknitkpf313733h32aq5mfhse3f1j8.apps.googleusercontent.com">
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              const decode = jwt_decode(credentialResponse.credential);
+              console.log(decode);
+              const payload = {
+                id: decode.exp,
+                email: decode.email,
+                name: decode.name,
+                telephone: decode.exp,
+                admin: false,
+              };
+              alerts("Aloha!", `Welcome ${decode.name} 🏝`, "success");
+              dispatch(setUser(payload));
+              navigate("/");
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
+        </GoogleOAuthProvider>
       </div>
     </div>
   );
