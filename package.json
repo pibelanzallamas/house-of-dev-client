@@ -2,10 +2,17 @@
   "name": "houseofdev",
   "version": "0.1.0",
   "private": true,
+  "peerDependencies": {
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0"
+  },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.14.3",
+    "@fontsource/roboto": "^5.0.8",
+    "@mui/icons-material": "^5.14.9",
+    "@mui/material": "^5.14.10",
+    "@mui/styled-engine-sc": "^5.14.10",
     "@react-oauth/google": "^0.11.1",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",
@@ -19,10 +26,10 @@
     "jwt-decode": "^3.1.2",
     "nodemailer": "^6.9.5",
     "prop-types": "^15.8.1",
-    "react": "^18.2.0",
+    "react": "^17.0.0 || ^18.0.0",
     "react-calendar": "^4.6.0",
     "react-datepicker": "^4.17.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^17.0.0 || ^18.0.0",
     "react-hook-form": "^7.45.2",
     "react-notifications-component": "^4.0.1",
     "react-oauth2": "^1.1.2",
@@ -31,6 +38,7 @@
     "react-scripts": "5.0.1",
     "redux": "^4.2.1",
     "sass": "^1.66.1",
+    "styled-components": "^5.3.11",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

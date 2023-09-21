@@ -1,10 +1,11 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { alerts } from "../utils/alerts";
 import Navbar from "../components/Navbar";
 import Cards from "../commons/Cards";
 import AppointmentsCards from "../commons/AppointmentsCards";
+import UserEditConfirmationModal from "../modals/UserEditConfirmationModal";
 
 function User() {
   const user = useSelector((state) => state.user);
@@ -15,6 +16,7 @@ function User() {
   const [estado, setEstado] = useState(false);
   const [favoritos, setFavoritos] = useState([]);
   const [citas, setCitas] = useState([]);
+  const [modalWindow, setModalWindow] = useState(false);
 
   //lee estado desde cards
   function hanldeEstado() {
@@ -33,15 +35,33 @@ function User() {
       .catch((err) => console.log(err));
   }, [user]);
 
-  //mod user
-  function handleChange(e) {
+  //form submit
+  const handleEdit = (e) => {
     e.preventDefault();
+    handleOpen();
+  };
 
+  //open modal
+  const handleOpen = () => {
+    setModalWindow(true);
+  };
+
+  //close modal
+  const handleClose = () => {
+    setModalWindow(false);
+  };
+
+  //mod user
+  const handleConfirm = () => {
     axios
       .put(`/api/users/${user.id}`, { name, email, telephone })
-      .then((mod) => alerts("Ok!", "Modificó su perfil 😎", "success"))
-      .catch((err) => alerts("Err", "Ingrese datos correctos 😖", "danger"));
-  }
+      .then(() => {
+        alerts("Ok!", "Modificó su perfil 😎", "success");
+        setEstado(!estado);
+        handleClose();
+      })
+      .catch(() => alerts("Err", "Ingrese datos correctos 😖", "danger"));
+  };
 
   //get favs de user
   useEffect(() => {
@@ -67,7 +87,7 @@ function User() {
           <h2 className="linea1">MI PERFIL</h2>
         </div>
         <div className="user-datos">
-          <form onSubmit={handleChange}>
+          <form onSubmit={handleEdit}>
             <img
               src="https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png"
               alt="Imagen del usuario"
@@ -160,6 +180,11 @@ function User() {
             </h2>
           </div>
         )}
+        <UserEditConfirmationModal
+          isOpen={modalWindow}
+          onClose={handleClose}
+          onConfirm={handleConfirm}
+        />
       </div>
     </div>
   );
