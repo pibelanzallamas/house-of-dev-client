@@ -23,7 +23,7 @@ function Properties() {
   const cate = ["Ph", "Local", "Terreno", "Casa", "Departamento"];
 
   function handleDispo() {
-    if (!dispo.includes(disponibility)) {
+    if (!dispo.includes(disponibility.value)) {
       alerts(
         "Ohno!",
         `Ingrese "Alquiler" o "Venta" en Disponibilidad 🤓`,
@@ -33,7 +33,7 @@ function Properties() {
   }
 
   function handleCate() {
-    if (!cate.includes(categories)) {
+    if (!cate.includes(categories.value)) {
       alerts(
         "Ohno!",
         `Ingrese "Casa", "Departamento", "Local", "Ph", "Terreno" en Categoría 🤓`,
