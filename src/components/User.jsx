@@ -5,7 +5,7 @@ import { alerts } from "../utils/alerts";
 import Navbar from "../components/Navbar";
 import Cards from "../commons/Cards";
 import AppointmentsCards from "../commons/AppointmentsCards";
-import UserEditConfirmationModal from "../modals/UserEditConfirmationModal";
+import UserModals from "../modals/UserModals";
 
 function User() {
   const user = useSelector((state) => state.user);
@@ -16,7 +16,7 @@ function User() {
   const [estado, setEstado] = useState(false);
   const [favoritos, setFavoritos] = useState([]);
   const [citas, setCitas] = useState([]);
-  const [modalWindow, setModalWindow] = useState(false);
+  const [window, setWindow] = useState(false);
 
   //lee estado desde cards
   function hanldeEstado() {
@@ -36,20 +36,13 @@ function User() {
   }, [user, uid]);
 
   //form submit
-  const handleEdit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     handleOpen();
   };
+  const handleOpen = () => setWindow(true);
 
-  //open modal
-  const handleOpen = () => {
-    setModalWindow(true);
-  };
-
-  //close modal
-  const handleClose = () => {
-    setModalWindow(false);
-  };
+  const handleClose = () => setWindow(false);
 
   //mod user
   const handleConfirm = () => {
@@ -87,7 +80,7 @@ function User() {
           <h2 className="linea1">MI PERFIL</h2>
         </div>
         <div className="user-datos">
-          <form onSubmit={handleEdit}>
+          <form onSubmit={handleSubmit}>
             <img
               src="https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png"
               alt="Imagen del usuario"
@@ -134,10 +127,18 @@ function User() {
                 required
               ></input>
             </div>
+
             {user.admin ? <label>Admin ✔️</label> : <></>}
+
             <button className="boton-editar" style={{ left: "86%" }}>
               MODIFICAR
             </button>
+            <UserModals
+              isOpen={window}
+              onClose={handleClose}
+              onConfirm={handleConfirm}
+              text={"¿Modificar su perfil?"}
+            />
           </form>
         </div>
 
@@ -156,7 +157,7 @@ function User() {
           </>
         ) : (
           <div className="home-titulo" style={{ border: "none" }}>
-            <h2 className="linea1" style={{ marginRight: "1%" }}>
+            <h2 className="linea1" style={{ marginRight: "2%" }}>
               NO HAY FAVORITOS
             </h2>
           </div>
@@ -180,11 +181,6 @@ function User() {
             </h2>
           </div>
         )}
-        <UserEditConfirmationModal
-          isOpen={modalWindow}
-          onClose={handleClose}
-          onConfirm={handleConfirm}
-        />
       </div>
     </div>
   );

@@ -2,10 +2,14 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { alerts } from "../utils/alerts";
 import Navbar from "./Navbar";
+import UserModals from "../modals/UserModals";
 
 function Users() {
   const [users, setUsers] = useState([]);
-  const [modUsers, setModUser] = useState(false);
+  const [estado, setEstado] = useState(false);
+  const [window, setWindow] = useState(false);
+  const [window2, setWindow2] = useState(false);
+  const [data, setData] = useState({});
 
   //get all user
   useEffect(() => {
@@ -13,22 +17,40 @@ function Users() {
       .get("/api/users/all")
       .then((all) => setUsers(all.data))
       .catch((err) => console.log(err));
-  }, [modUsers]);
+  }, [estado]);
 
-  //del user
-  function handleDelete(userId, userName) {
-    axios.delete(`/api/users/${userId}`).then(() => {
-      setModUser(!modUsers);
-      alerts("Oh no!", `El usuario ${userName} ha sido eliminado 😵`, "danger");
-    });
+  const openWindow = () => setWindow(true);
+  const closeWindow = () => setWindow(false);
+  const openWindow2 = () => setWindow2(true);
+  const closeWindow2 = () => setWindow2(false);
+
+  function handleAdmin(user) {
+    setData(user);
+    openWindow();
   }
 
-  //admin user
-  function handleAdmin(userId, userName) {
-    axios.put(`/api/users/${userId}`, { admin: true }).then(() => {
-      setModUser(!modUsers);
-      alerts("Ok!", `El usuario ${userName} ahora es admin 💼`, "success");
+  function handleDelete(user) {
+    setData(user);
+    openWindow2();
+  }
+
+  function confirmAdmin() {
+    const { id, name } = data;
+
+    axios.put(`/api/users/${id}`, { admin: true }).then(() => {
+      setEstado(!estado);
+      alerts("Ok!", `El usuario ${name} ahora es admin 💼`, "success");
     });
+    closeWindow();
+  }
+
+  function confirmDelete() {
+    const { id, name } = data;
+    axios.delete(`/api/users/${id}`).then(() => {
+      setEstado(!estado);
+      alerts("Ok!", `El usuario ${name} ha sido eliminado 😵`, "success");
+    });
+    closeWindow2();
   }
 
   //scroll up
@@ -51,53 +73,50 @@ function Users() {
             {users.map((user) => (
               <>
                 <div className="user-datos" style={{ height: "310px" }}>
-                  <form>
-                    <img
-                      src="https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png"
-                      alt="Imagen del usuario"
-                    />
+                  <img
+                    src="https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png"
+                    alt="Imagen del usuario"
+                  />
+                  <div className="inputName">
+                    <label> Nombre y Apellido </label>
+                    <br></br>
+                    <input value={user.name}></input>
+                  </div>
 
-                    <div className="inputName">
-                      <label> Nombre y Apellido </label>
-                      <br></br>
-                      <input value={user.name}></input>
-                    </div>
+                  <div className="inputEmail">
+                    <label> Email </label>
+                    <br></br>
+                    <input value={user.email}></input>
+                  </div>
 
-                    <div className="inputEmail">
-                      <label> Email </label>
-                      <br></br>
-                      <input value={user.email}></input>
-                    </div>
-
-                    <div className="inputTel">
-                      <label> Telefono </label>
-                      <br></br>
-                      <input value={user.telephone}></input>
-                    </div>
-                    {user.admin ? <label>Admin ✔️</label> : <></>}
-                    {user.admin ? (
-                      <p> </p>
-                    ) : (
-                      <button
-                        className="boton-editar"
-                        onClick={() => handleAdmin(user.id, user.name)}
-                        style={{ left: "79%" }}
-                      >
-                        ADMIN
-                      </button>
-                    )}
-                    {user.email === "b@gmail.com" ? (
-                      <></>
-                    ) : (
-                      <button
-                        className="boton-editar "
-                        onClick={() => handleDelete(user.id, user.name)}
-                        style={{ left: "87%" }}
-                      >
-                        ELIMINAR
-                      </button>
-                    )}
-                  </form>
+                  <div className="inputTel">
+                    <label> Telefono </label>
+                    <br></br>
+                    <input value={user.telephone}></input>
+                  </div>
+                  {user.admin ? <label>Admin ✔️</label> : <></>}
+                  {user.admin ? (
+                    <p> </p>
+                  ) : (
+                    <button
+                      className="boton-editar"
+                      onClick={() => handleAdmin(user)}
+                      style={{ left: "79%" }}
+                    >
+                      ADMIN
+                    </button>
+                  )}
+                  {user.email === "b@gmail.com" ? (
+                    <></>
+                  ) : (
+                    <button
+                      className="boton-editar "
+                      onClick={() => handleDelete(user)}
+                      style={{ left: "87%" }}
+                    >
+                      ELIMINAR
+                    </button>
+                  )}
                 </div>
                 <hr></hr>
               </>
@@ -117,6 +136,18 @@ function Users() {
             IR A INICIO
           </button>
         </div>
+        <UserModals
+          isOpen={window}
+          onClose={closeWindow}
+          onConfirm={confirmAdmin}
+          text={"¿Desea modificar usuario?"}
+        />
+        <UserModals
+          isOpen={window2}
+          onClose={closeWindow2}
+          onConfirm={confirmDelete}
+          text={"¿Desea eliminar usuario?"}
+        />
       </div>
     </div>
   );

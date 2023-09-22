@@ -3,10 +3,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { alerts } from "../utils/alerts";
 import Navbar from "./Navbar";
+import UserModals from "../modals/UserModals";
 
 function Appointments() {
   const [appointments, setAppointments] = useState([]);
   const [estado, setEstado] = useState(false);
+  const [aid, setAid] = useState("");
+  const [uEmail, setUEmail] = useState("");
+  const [window, setWindow] = useState(false);
 
   useEffect(() => {
     axios
@@ -24,15 +28,30 @@ function Appointments() {
       .catch(() => alerts("Rayos!", "Mail no pudo enviarse ☠️", "warning"));
   }
 
-  function handleDel(id, email) {
+  function handleOpen() {
+    setWindow(true);
+  }
+
+  function handleClose() {
+    setWindow(false);
+  }
+
+  function handleClick(id, email) {
+    setAid(id);
+    setUEmail(email);
+    handleOpen();
+  }
+
+  function handleConfirm() {
     axios
-      .delete(`/api/appointments/${id}`)
+      .delete(`/api/appointments/${aid}`)
       .then(() => {
         alerts("Ok!", "Cita cancelada! 🤝", "success");
-        sendEmail(email);
+        sendEmail(uEmail);
         setEstado(!estado);
       })
       .catch((err) => console.log(err));
+    handleClose();
   }
 
   function handleScroll() {
@@ -108,7 +127,7 @@ function Appointments() {
                   <Link
                     className="boton-mas"
                     onClick={() => {
-                      handleDel(elemento.id, elemento.user.email);
+                      handleClick(elemento.id, elemento.user.email);
                     }}
                     style={{ left: "68%", top: "7px" }}
                   >
@@ -129,6 +148,12 @@ function Appointments() {
           <button className="onTop" onClick={handleScroll}>
             IR A INICIO
           </button>
+          <UserModals
+            isOpen={window}
+            onClose={handleClose}
+            onConfirm={handleConfirm}
+            text={"¿Deseas cancelar la cita?"}
+          />
         </div>
       </div>
     </>

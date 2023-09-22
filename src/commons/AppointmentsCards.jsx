@@ -3,9 +3,13 @@ import { Link } from "react-router-dom";
 import "animate.css/animate.min.css";
 import { alerts } from "../utils/alerts";
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import UserModals from "../modals/UserModals";
 
 function AppointmentsCards({ cita, modFavs }) {
   const user = useSelector((state) => state.user);
+  const [window, setWindow] = useState(false);
+  const [aid, setAid] = useState("");
 
   //send email
   function sendEmail(email) {
@@ -16,16 +20,25 @@ function AppointmentsCards({ cita, modFavs }) {
   }
 
   //eliminar cita
+  const handleOpen = () => setWindow(true);
+  const handleClose = () => setWindow(false);
+
   function handleDel(id) {
+    setAid(id);
+    handleOpen();
+  }
+
+  const handleConfirm = () => {
     axios
-      .delete(`/api/appointments/${id}`)
+      .delete(`/api/appointments/${aid}`)
       .then(() => {
         alerts("Ok!", "Cita cancelada! 🤝", "success");
         sendEmail(user.email);
         modFavs();
+        handleClose();
       })
       .catch((err) => console.log(err));
-  }
+  };
 
   return (
     <>
@@ -81,6 +94,12 @@ function AppointmentsCards({ cita, modFavs }) {
               CANCELAR
             </Link>
           </div>
+          <UserModals
+            isOpen={window}
+            onClose={handleClose}
+            onConfirm={handleConfirm}
+            text={"¿Desea cancelar la cita?"}
+          />
         </div>
       </div>
     </>

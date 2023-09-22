@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { alerts } from "../utils/alerts";
 import useInput from "../hooks/useInput";
 import Navbar from "./Navbar";
+import UserModals from "../modals/UserModals";
 
 function Property() {
   const user = useSelector((state) => state.user);
@@ -31,6 +32,107 @@ function Property() {
   const navigate = useNavigate();
   const dispo = ["Alquiler", "Venta"];
   const cate = ["Ph", "Local", "Terreno", "Casa", "Departamento"];
+  const [window, setWindow] = useState(false);
+  const [window2, setWindow2] = useState(false);
+  const [window3, setWindow3] = useState(false);
+  const [rId, setRID] = useState("");
+
+  function openModal() {
+    setWindow(true);
+  }
+
+  function closeModal() {
+    setWindow(false);
+  }
+
+  function openModal2() {
+    setWindow2(true);
+  }
+
+  function closeModal2() {
+    setWindow2(false);
+  }
+
+  function openModal3() {
+    setWindow3(true);
+  }
+
+  function closeModal3() {
+    setWindow3(false);
+  }
+
+  //modifica la propiedad
+  function handleMod(e) {
+    e.preventDefault();
+    openModal();
+  }
+
+  function handleDel(e) {
+    e.preventDefault();
+    openModal2();
+  }
+
+  function handleDrop(e) {
+    openModal3();
+    setRID(e);
+  }
+
+  function handleConfirm() {
+    axios
+      .put(`/api/properties/mod/${pid}`, {
+        name,
+        address,
+        country,
+        city,
+        neighborhood,
+        description,
+        bathrooms,
+        rooms,
+        images,
+        price,
+        categories,
+        disponibility,
+      })
+      .then((mod) => {
+        if (mod.data[0] === 1) {
+          setEstado(!estado);
+          alerts("Ok!", "La propiedad se modificó 👍", "success");
+          navigate("/");
+        } else {
+          alerts("Ohoh!", "Ingrese datos validos 😵", "warning");
+        }
+        closeModal();
+      })
+      .catch(() => {
+        alerts("Auch!", "Ocurrio un error 🤧", "danger");
+      });
+  }
+
+  function handleConfirm2() {
+    axios
+      .delete(`/api/properties/${pid}`)
+      .then(() => {
+        alerts("Ok!", "Propiedad eliminada 👍", "success");
+        navigate("/");
+      })
+      .catch(() => {
+        alerts("Ohno!", "La Propiedad no pudo eliminarse 🤨", "danger");
+      });
+    closeModal2();
+  }
+
+  function handleConfirm3() {
+    axios
+      .delete(`/api/reviews/${rId}`)
+      .then(() => {
+        alerts("Ok!", "La review se eliminó 👍", "success");
+        setEstado(!estado);
+      })
+      .catch(() => {
+        alerts("Nope!", "La review no pudo eliminarse 🤏", "warning");
+      });
+    closeModal3();
+  }
 
   //get propiedad
   useEffect(() => {
@@ -100,54 +202,6 @@ function Property() {
       alerts("Ohno!", `Ingrese un precio entre 10000 a 1000000 🤓`, "warning");
       setPrice(10000);
     }
-  }
-
-  //modifica la propiedad
-  function handleMod(e) {
-    e.preventDefault();
-
-    axios
-      .put(`/api/properties/mod/${pid}`, {
-        name,
-        address,
-        country,
-        city,
-        neighborhood,
-        description,
-        bathrooms,
-        rooms,
-        images,
-        price,
-        categories,
-        disponibility,
-      })
-      .then((mod) => {
-        if (mod.data[0] === 1) {
-          setEstado(!estado);
-          alerts("Ok!", "La propiedad se modificó 👍", "success");
-          navigate("/");
-        } else {
-          alerts("Ohoh!", "Ingrese datos validos 😵", "warning");
-        }
-      })
-      .catch(() => {
-        alerts("Auch!", "Ocurrio un error 🤧", "danger");
-      });
-  }
-
-  //elimina la propiedad
-  function hanldeDel(e) {
-    e.preventDefault();
-
-    axios
-      .delete(`/api/properties/${pid}`)
-      .then(() => {
-        alerts("Ok!", "Propiedad eliminada 👍", "success");
-        navigate("/");
-      })
-      .catch(() => {
-        alerts("Ohno!", "La Propiedad no pudo eliminarse 🤨", "danger");
-      });
   }
 
   //likea
@@ -227,19 +281,6 @@ function Property() {
         }
       })
       .catch((err) => console.log(err));
-  }
-
-  //elimnina review
-  function handleDrop(rid) {
-    axios
-      .delete(`/api/reviews/${rid}`)
-      .then(() => {
-        alerts("Ok!", "La review se eliminó 👍", "success");
-        setEstado(!estado);
-      })
-      .catch(() => {
-        alerts("Nope!", "La review no pudo eliminarse 🤏", "warning");
-      });
   }
 
   return (
@@ -433,7 +474,7 @@ function Property() {
                   </button>
                   <button
                     className="boton-editar "
-                    onClick={(e) => hanldeDel(e)}
+                    onClick={(e) => handleDel(e)}
                     style={{ left: "75%", top: "92%" }}
                   >
                     ELIMINAR
@@ -472,14 +513,12 @@ function Property() {
           </div>
         </div>
         <div className="ver-comments">
-          {/* //Titulo Ver Reseñas */}
           <div
             className="home-titulo"
             style={{ "margin-bottom": "1%", color: "red" }}
           >
             <h2 className="linea1">RESEÑAS</h2>
           </div>
-          {/* //Contendio */}
           <div className="property-card">
             {reviews.length > 0 ? (
               reviews.map((review) => (
@@ -527,14 +566,12 @@ function Property() {
           </div>
         </div>
         <div className="escribir-comments">
-          {/* //Titulo Escribir Reseña */}
           <div
             className="home-titulo"
             style={{ "margin-bottom": "1%", color: "red" }}
           >
             <h2 className="linea1">ESCRIBIR RESEÑA</h2>
           </div>
-          {/* Contenido */}
           <div className="property-card">
             <div
               className="user-datos"
@@ -575,6 +612,24 @@ function Property() {
             </div>
           </div>
         </div>
+        <UserModals
+          isOpen={window}
+          onClose={closeModal}
+          onConfirm={handleConfirm}
+          text={"¿Desea modificar propiedad?"}
+        />
+        <UserModals
+          isOpen={window2}
+          onClose={closeModal2}
+          onConfirm={handleConfirm2}
+          text={"¿Desea eliminar propiedad?"}
+        />
+        <UserModals
+          isOpen={window3}
+          onClose={closeModal3}
+          onConfirm={handleConfirm3}
+          text={"¿Desea eliminar comentario?"}
+        />
       </div>
     </div>
   );

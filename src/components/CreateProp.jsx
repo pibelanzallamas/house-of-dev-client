@@ -1,9 +1,11 @@
 import axios from "axios";
+import { useState } from "react";
 import useInput from "../hooks/useInput";
 import "animate.css/animate.min.css";
 import { alerts } from "../utils/alerts";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import UserModals from "../modals/UserModals";
 
 function Properties() {
   const name = useInput("");
@@ -22,29 +24,17 @@ function Properties() {
   const dispo = ["Alquiler", "Venta"];
   const cate = ["Ph", "Local", "Terreno", "Casa", "Departamento"];
 
-  function handleDispo() {
-    if (!dispo.includes(disponibility.value)) {
-      alerts(
-        "Ohno!",
-        `Ingrese "Alquiler" o "Venta" en Disponibilidad 🤓`,
-        "warning"
-      );
-    }
-  }
+  const [window, setWindow] = useState(false);
 
-  function handleCate() {
-    if (!cate.includes(categories.value)) {
-      alerts(
-        "Ohno!",
-        `Ingrese "Casa", "Departamento", "Local", "Ph", "Terreno" en Categoría 🤓`,
-        "warning"
-      );
-    }
-  }
+  const handleOpen = () => setWindow(true);
+  const handleClose = () => setWindow(false);
 
   function handleRegister(e) {
     e.preventDefault();
+    handleOpen();
+  }
 
+  const handleConfirm = () => {
     axios
       .post("/api/properties/register", {
         name: name.value,
@@ -72,6 +62,27 @@ function Properties() {
         }
       })
       .catch((err) => console.log(err));
+    handleClose();
+  };
+
+  function handleDispo() {
+    if (!dispo.includes(disponibility.value)) {
+      alerts(
+        "Ohno!",
+        `Ingrese "Alquiler" o "Venta" en Disponibilidad 🤓`,
+        "warning"
+      );
+    }
+  }
+
+  function handleCate() {
+    if (!cate.includes(categories.value)) {
+      alerts(
+        "Ohno!",
+        `Ingrese "Casa", "Departamento", "Local", "Ph", "Terreno" en Categoría 🤓`,
+        "warning"
+      );
+    }
   }
 
   return (
@@ -234,13 +245,19 @@ function Properties() {
 
               <button
                 className="boton-editar"
-                style={{ left: "86.5%", top: "93%" }}
+                style={{ left: "86.5%", top: "94%" }}
               >
                 GUARDAR
               </button>
             </form>
           </div>
           <hr></hr>
+          <UserModals
+            isOpen={window}
+            onClose={handleClose}
+            onConfirm={handleConfirm}
+            text={"¿Desea crear esta propiedad?"}
+          />
         </div>
       </div>
     </>

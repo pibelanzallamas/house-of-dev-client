@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 
-function UserEditConfirmationModal({ isOpen, onClose, onConfirm }) {
+function UserModals({ isOpen, onClose, onConfirm, text }) {
   return (
     <Modal
       open={isOpen}
@@ -17,17 +17,28 @@ function UserEditConfirmationModal({ isOpen, onClose, onConfirm }) {
           transform: "translate(-50%, -50%)",
           backgroundColor: "white",
           borderRadius: "8px",
-          padding: "16px",
+          padding: "20px",
           outline: "none",
           boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.16)",
         }}
       >
-        <p>¿Desea confirmar la modificación de los datos del usuario?</p>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <p>{text}</p>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "8%",
+          }}
+        >
           <Button variant="outlined" onClick={onClose}>
             Cancelar
           </Button>
-          <Button variant="contained" color="primary" onClick={onConfirm}>
+          <Button
+            style={{ marginLeft: "1%" }}
+            variant="contained"
+            color="primary"
+            onClick={onConfirm}
+          >
             Confirmar
           </Button>
         </div>
@@ -36,4 +47,4 @@ function UserEditConfirmationModal({ isOpen, onClose, onConfirm }) {
   );
 }
 
-export default UserEditConfirmationModal;
+export default UserModals;

@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import { alerts } from "../utils/alerts";
 import AppointmentsCards from "../commons/AppointmentsCards";
+import UserModals from "../modals/UserModals";
 
 function CreateAppo() {
   const pid = useParams().id;
@@ -21,6 +22,7 @@ function CreateAppo() {
   const [startDate, setStartDate] = useState(new Date());
   const today = new Date();
   const navigate = useNavigate();
+  const [window, setWindow] = useState(false);
 
   //get property
   useEffect(() => {
@@ -31,6 +33,35 @@ function CreateAppo() {
       })
       .catch((err) => console.log(err));
   }, [user, pid]);
+
+  //create appointment
+  const handleOpen = () => setWindow(true);
+  const handleClose = () => setWindow(false);
+
+  function handleClick() {
+    handleOpen();
+  }
+
+  const handleConfirm = () => {
+    axios
+      .post("/api/appointments/register", { uid, pid, date: startDate })
+      .then((data) => {
+        if (data.data[1]) {
+          handleClose();
+          alerts("Exito!", "Cita agendada correctamente 📝", "success");
+          sendEmail(startDate, property);
+          navigate("/");
+        } else {
+          handleClose();
+          alerts(
+            "Oops!",
+            "Lo siento, este horario ya está reservado 😇",
+            "warning"
+          );
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   //check Date
   useEffect(() => {
@@ -56,24 +87,6 @@ function CreateAppo() {
   }
 
   //create appointment
-  function handleDate() {
-    axios
-      .post("/api/appointments/register", { uid, pid, date: startDate })
-      .then((data) => {
-        if (data.data[1]) {
-          alerts("Exito!", "Cita agendada correctamente 📝", "success");
-          sendEmail(startDate, property);
-          navigate(`/users/${uid}`);
-        } else {
-          alerts(
-            "Oops!",
-            "Lo siento, este horario ya está reservado 😇",
-            "warning"
-          );
-        }
-      })
-      .catch((err) => console.log(err));
-  }
 
   function handleChange() {
     navigate(`/users/${uid}`);
@@ -137,10 +150,16 @@ function CreateAppo() {
                 />
               </div>
               <div className="boton-div">
-                <button className="boton-fecha" onClick={handleDate}>
+                <button className="boton-fecha" onClick={() => handleClick()}>
                   Confirmar Fecha
                 </button>
               </div>
+              <UserModals
+                isOpen={window}
+                onClose={handleClose}
+                onConfirm={handleConfirm}
+                text={"¿Desea crear esta cita?"}
+              />
             </div>
           </div>
         )}

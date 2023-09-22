@@ -192,7 +192,7 @@ function Properties() {
                   onClick={handleScroll}
                   className="boton-mas"
                   to={`/properties/${elemento.id}`}
-                  style={{ top: "92%", fontSize: "13px", left: "88%" }}
+                  style={{ top: "93%", fontSize: "13px", left: "88%" }}
                 >
                   VER MÁS
                 </Link>
