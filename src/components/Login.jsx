@@ -3,8 +3,8 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "../state/userState";
 import { useNavigate, Link } from "react-router-dom";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import jwt_decode from "jwt-decode";
+// import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+// import jwt_decode from "jwt-decode";
 import { alerts } from "../utils/alerts";
 
 function Login() {
@@ -72,7 +72,7 @@ function Login() {
         </form>
       </div>
       <div style={{ left: "82%", position: "absolute" }}>
-        <GoogleOAuthProvider clientId="413054924757-e1sknitkpf313733h32aq5mfhse3f1j8.apps.googleusercontent.com">
+        {/* <GoogleOAuthProvider clientId="413054924757-e1sknitkpf313733h32aq5mfhse3f1j8.apps.googleusercontent.com">
           <GoogleLogin
             onSuccess={(credentialResponse) => {
               const decode = jwt_decode(credentialResponse.credential);
@@ -92,7 +92,7 @@ function Login() {
               console.log("Login Failed");
             }}
           />
-        </GoogleOAuthProvider>
+        </GoogleOAuthProvider> */}
       </div>
     </div>
   );

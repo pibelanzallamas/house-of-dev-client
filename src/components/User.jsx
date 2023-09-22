@@ -33,7 +33,7 @@ function User() {
         setTelephone(user.data.telephone);
       })
       .catch((err) => console.log(err));
-  }, [user]);
+  }, [user, uid]);
 
   //form submit
   const handleEdit = (e) => {
@@ -77,7 +77,7 @@ function User() {
       .get(`/api/appointments/${uid}`)
       .then((all) => setCitas(all.data))
       .catch((err) => console.log(err));
-  }, [estado]);
+  }, [estado, uid]);
 
   return (
     <div>

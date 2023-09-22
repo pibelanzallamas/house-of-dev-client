@@ -20,14 +20,8 @@ function Appointments() {
   function sendEmail(email) {
     axios
       .post(`/api/users/delete/${email}`)
-      .then((res) => {
-        alerts("Exito!", "Mail de cencelación enviado ✉️", "success");
-        console.log(res);
-      })
-      .catch((err) => {
-        alerts("Rayos!", "Mail no pudo enviarse ☠️", "warning");
-        console.log(err);
-      });
+      .then(() => alerts("Exito!", "Mail de cencelación enviado ✉️", "success"))
+      .catch(() => alerts("Rayos!", "Mail no pudo enviarse ☠️", "warning"));
   }
 
   function handleDel(id, email) {

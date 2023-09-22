@@ -29,7 +29,7 @@ function Cards({ property, modFavs }) {
         else setDate(false);
       })
       .catch((err) => console.log(err));
-  }, [user]);
+  }, [user, uid, pid]);
 
   function hanldeLike() {
     axios
@@ -94,21 +94,21 @@ function Cards({ property, modFavs }) {
               </p>
             </div>
             <div className="cuadradito-cuatro">
-              <img src="/logo-city.png" />
+              <img src="/logo-city.png" alt="logo-city" />
               <p>{property.city}</p>
             </div>
           </div>
           <div className="rectangulo-uno">
             <div className="cuadradito-dos">
-              <img src="/logo-metro.png" />
+              <img src="/logo-metro.png" alt="logo-metro" />
               <p> 100 m²</p>
             </div>
             <div className="cuadradito-tres">
-              <img src="/logo-bed.png" />
+              <img src="/logo-bed.png" alt="logo-bed" />
               <p>{property.rooms} dorm.</p>
             </div>
             <div className="cuadradito-cinco">
-              <img src="/logo-bath.png" />
+              <img src="/logo-bath.png" alt="logo-bath" />
               <p>{property.bathrooms} baños</p>
             </div>
           </div>
@@ -122,20 +122,20 @@ function Cards({ property, modFavs }) {
           <div className="rectangulo-tres">
             {like ? (
               <Link className="boton-like" onClick={hanldeDislike}>
-                <img src="/boton-cora2.png" />
+                <img src="/boton-cora2.png" alt="boton-cora2" />
               </Link>
             ) : (
               <Link className="boton-like" onClick={hanldeLike}>
-                <img src="/boton-cora.png" />
+                <img src="/boton-cora.png" alt="boton-cora" />
               </Link>
             )}
             {date ? (
               <Link className="boton-cita" to={`/appointments/register/${pid}`}>
-                <img src="/boton-cita2.png" />
+                <img src="/boton-cita2.png" alt="boton-cita2" />
               </Link>
             ) : (
               <Link className="boton-cita" to={`/appointments/register/${pid}`}>
-                <img src="/boton-cita.png" />
+                <img src="/boton-cita.png" alt="boton-cita" />
               </Link>
             )}
             <Link

@@ -7,6 +7,14 @@ import { useSelector } from "react-redux";
 function AppointmentsCards({ cita, modFavs }) {
   const user = useSelector((state) => state.user);
 
+  //send email
+  function sendEmail(email) {
+    axios
+      .post(`/api/users/delete/${email}`)
+      .then(() => alerts("Exito!", "Mail de cencelación enviado ✉️", "success"))
+      .catch(() => alerts("Rayos!", "Mail no pudo enviarse ☠️", "warning"));
+  }
+
   //eliminar cita
   function handleDel(id) {
     axios
@@ -17,19 +25,6 @@ function AppointmentsCards({ cita, modFavs }) {
         modFavs();
       })
       .catch((err) => console.log(err));
-  }
-
-  function sendEmail(email) {
-    axios
-      .post(`/api/users/delete/${email}`)
-      .then((res) => {
-        alerts("Exito!", "Mail de cencelación enviado ✉️", "success");
-        console.log(res);
-      })
-      .catch((err) => {
-        alerts("Rayos!", "Mail no pudo enviarse ☠️", "warning");
-        console.log(err);
-      });
   }
 
   return (

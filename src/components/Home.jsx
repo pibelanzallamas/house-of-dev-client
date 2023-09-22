@@ -10,7 +10,7 @@ function Home() {
           <h2 className="linea1">HOUSE OF DEV INMOBILIARIA</h2>
         </div>
         <div className="home-imagen">
-          <img src="/homeFondo.png"></img>
+          <img className="imagen-fondo" src="/homeFondo.png" alt="home-fondo" />
         </div>
         <hr />
         <Content />

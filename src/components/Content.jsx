@@ -38,7 +38,7 @@ function Content() {
     const prop2 = properties.filter((property) => {
       return Object.keys(filters).every((key) => {
         if (!filters[key]) return true;
-        return property[key] == filters[key];
+        return property[key] === filters[key];
       });
     });
 
@@ -90,11 +90,11 @@ function Content() {
           <option value="" selected>
             Habítaciones
           </option>
-          <option value="1"> 1</option>
-          <option value="2"> 2</option>
-          <option value="3"> 3</option>
-          <option value="4"> 4</option>
-          <option value="5"> 5</option>
+          <option value={1}> 1</option>
+          <option value={2}> 2</option>
+          <option value={3}> 3</option>
+          <option value={4}> 4</option>
+          <option value={5}> 5</option>
         </select>
         <input
           className="inputSearch"

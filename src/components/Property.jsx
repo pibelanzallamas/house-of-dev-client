@@ -1,13 +1,10 @@
 import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { alerts } from "../utils/alerts";
 import useInput from "../hooks/useInput";
 import Navbar from "./Navbar";
-
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 function Property() {
   const user = useSelector((state) => state.user);
@@ -35,9 +32,6 @@ function Property() {
   const dispo = ["Alquiler", "Venta"];
   const cate = ["Ph", "Local", "Terreno", "Casa", "Departamento"];
 
-  const [fecha, setFecha] = useState(null);
-  const referencia = useRef(null);
-
   //get propiedad
   useEffect(() => {
     axios
@@ -57,7 +51,56 @@ function Property() {
         setDisponibility(prop.data.disponibility);
       })
       .catch((err) => console.log(err));
-  }, [estado]);
+  }, [estado, pid]);
+
+  //find fav
+  useEffect(() => {
+    axios.get("/api/favorites/find", { params: { uid, pid } }).then((fav) => {
+      if (fav.data.pid) setLike(true);
+      else setLike(false);
+    });
+  }, [estado, user, uid, pid]);
+
+  //find appo
+  useEffect(() => {
+    axios
+      .get("/api/appointments/find/one", { params: { uid, pid } })
+      .then((data) => {
+        if (data.data.pid) setDate(true);
+        else setDate(false);
+      })
+      .catch((err) => console.log(err));
+  }, [estado, user, uid, pid]);
+
+  //verfican los datos
+  function handleDispo() {
+    if (!dispo.includes(disponibility)) {
+      alerts(
+        "Ohno!",
+        `Ingrese "Alquiler" o "Venta" en Disponibilidad 🤓`,
+        "warning"
+      );
+      setDisponibility("");
+    }
+  }
+
+  function handleCate() {
+    if (!cate.includes(categories)) {
+      alerts(
+        "Ohno!",
+        `Ingrese "Casa", "Departamento", "Local", "Ph", "Terreno" en Categoría 🤓`,
+        "warning"
+      );
+      setCategories("");
+    }
+  }
+
+  function handlePrice() {
+    if (price > 1000000 || price < 10000) {
+      alerts("Ohno!", `Ingrese un precio entre 10000 a 1000000 🤓`, "warning");
+      setPrice(10000);
+    }
+  }
 
   //modifica la propiedad
   function handleMod(e) {
@@ -92,36 +135,6 @@ function Property() {
       });
   }
 
-  //verfican los datos
-  function handleDispo() {
-    if (!dispo.includes(disponibility)) {
-      alerts(
-        "Ohno!",
-        `Ingrese "Alquiler" o "Venta" en Disponibilidad 🤓`,
-        "warning"
-      );
-      setDisponibility("");
-    }
-  }
-
-  function handleCate() {
-    if (!cate.includes(categories)) {
-      alerts(
-        "Ohno!",
-        `Ingrese "Casa", "Departamento", "Local", "Ph", "Terreno" en Categoría 🤓`,
-        "warning"
-      );
-      setCategories("");
-    }
-  }
-
-  function handlePrice() {
-    if (price > 1000000 || price < 10000) {
-      alerts("Ohno!", `Ingrese un precio entre 10000 a 1000000 🤓`, "warning");
-      setPrice(10000);
-    }
-  }
-
   //elimina la propiedad
   function hanldeDel(e) {
     e.preventDefault();
@@ -136,25 +149,6 @@ function Property() {
         alerts("Ohno!", "La Propiedad no pudo eliminarse 🤨", "danger");
       });
   }
-
-  //get favorito
-  useEffect(() => {
-    axios.get("/api/favorites/find", { params: { uid, pid } }).then((fav) => {
-      if (fav.data.pid) setLike(true);
-      else setLike(false);
-    });
-  }, [estado, user]);
-
-  //get date
-  useEffect(() => {
-    axios
-      .get("/api/appointments/find/one", { params: { uid, pid } })
-      .then((data) => {
-        if (data.data.pid) setDate(true);
-        else setDate(false);
-      })
-      .catch((err) => console.log(err));
-  }, [estado, user]);
 
   //likea
   function hanldeLike() {
@@ -205,9 +199,9 @@ function Property() {
       .get(`/api/reviews/${pid}`)
       .then((rev) => setReviews(rev.data))
       .catch((err) => console.log(err));
-  }, [estado]);
+  }, [estado, pid]);
 
-  //agrega review
+  //agregar review
   function handleReview(e) {
     e.preventDefault();
 
@@ -247,14 +241,6 @@ function Property() {
         alerts("Nope!", "La review no pudo eliminarse 🤏", "warning");
       });
   }
-
-  function handleClick() {
-    referencia.current.setOpen(true);
-  }
-
-  // function handleDateChange(date) {
-  //   setFecha(date);
-  // }
 
   return (
     <div>
@@ -458,11 +444,11 @@ function Property() {
               )}
               {like ? (
                 <Link className="boton-like2" onClick={hanldeDislike}>
-                  <img src="/boton-cora2.png" />
+                  <img src="/boton-cora2.png" alt="boton-cora2" />
                 </Link>
               ) : (
                 <Link className="boton-like2" onClick={hanldeLike}>
-                  <img src="/boton-cora.png" />
+                  <img src="/boton-cora.png" alt="boton-cora" />
                 </Link>
               )}
               {date ? (
@@ -471,7 +457,7 @@ function Property() {
                   style={{ left: "90.5%" }}
                   to={`/appointments/register/${pid}`}
                 >
-                  <img src="/boton-cita2.png" />
+                  <img src="/boton-cita2.png" alt="boton-cita2" />
                 </Link>
               ) : (
                 <Link
@@ -479,21 +465,21 @@ function Property() {
                   style={{ left: "90.5%" }}
                   to={`/appointments/register/${pid}`}
                 >
-                  <img src="/boton-cita.png" />
+                  <img src="/boton-cita.png" alt="boton-cita" />
                 </Link>
               )}
             </form>
           </div>
         </div>
         <div className="ver-comments">
-          {/* //Titulo Reseñas */}
+          {/* //Titulo Ver Reseñas */}
           <div
             className="home-titulo"
             style={{ "margin-bottom": "1%", color: "red" }}
           >
             <h2 className="linea1">RESEÑAS</h2>
           </div>
-          {/* //Contendio Reseñas */}
+          {/* //Contendio */}
           <div className="property-card">
             {reviews.length > 0 ? (
               reviews.map((review) => (

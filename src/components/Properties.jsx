@@ -5,7 +5,6 @@ import Navbar from "./Navbar";
 
 function Properties() {
   const [properties, setProperies] = useState([]);
-  const [estado, setEstado] = useState(false);
 
   //get properties
   useEffect(() => {
@@ -13,7 +12,7 @@ function Properties() {
       .get("/api/properties/all")
       .then((all) => setProperies(all.data))
       .catch((err) => console.log(err));
-  }, [estado]);
+  }, []);
 
   function handleScroll() {
     window.scrollTo({

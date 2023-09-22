@@ -43,12 +43,12 @@ function CreateAppo() {
         } else setDate(false);
       })
       .catch((err) => console.log(err));
-  }, [user, pid]);
+  }, [user, pid, uid]);
 
   //sent email
-  function sendEmail(date) {
+  function sendEmail(date, place) {
     axios
-      .post(`/api/users/register/${user.email}`, { date })
+      .post(`/api/users/register/${user.email}`, { date, place })
       .then(() =>
         alerts("Exito!", "Mail de confirmación enviado ✉️", "success")
       )
@@ -62,7 +62,7 @@ function CreateAppo() {
       .then((data) => {
         if (data.data[1]) {
           alerts("Exito!", "Cita agendada correctamente 📝", "success");
-          sendEmail(startDate);
+          sendEmail(startDate, property);
           navigate(`/users/${uid}`);
         } else {
           alerts(
