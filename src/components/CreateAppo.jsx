@@ -48,7 +48,7 @@ function CreateAppo() {
   //sent email
   function sendEmail(date) {
     axios
-      .post(`/api/users/send/${user.email}`, { date })
+      .post(`/api/users/register/${user.email}`, { date })
       .then(() =>
         alerts("Exito!", "Mail de confirmación enviado ✉️", "success")
       )
@@ -61,8 +61,8 @@ function CreateAppo() {
       .post("/api/appointments/register", { uid, pid, date: startDate })
       .then((data) => {
         if (data.data[1]) {
-          sendEmail(startDate);
           alerts("Exito!", "Cita agendada correctamente 📝", "success");
+          sendEmail(startDate);
           navigate(`/users/${uid}`);
         } else {
           alerts(

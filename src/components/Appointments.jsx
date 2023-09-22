@@ -17,11 +17,25 @@ function Appointments() {
       .catch((err) => console.log(err));
   }, [estado]);
 
-  function handleDel(id) {
+  function sendEmail(email) {
+    axios
+      .post(`/api/users/delete/${email}`)
+      .then((res) => {
+        alerts("Exito!", "Mail de cencelación enviado ✉️", "success");
+        console.log(res);
+      })
+      .catch((err) => {
+        alerts("Rayos!", "Mail no pudo enviarse ☠️", "warning");
+        console.log(err);
+      });
+  }
+
+  function handleDel(id, email) {
     axios
       .delete(`/api/appointments/${id}`)
       .then(() => {
         alerts("Ok!", "Cita cancelada! 🤝", "success");
+        sendEmail(email);
         setEstado(!estado);
       })
       .catch((err) => console.log(err));
@@ -33,7 +47,7 @@ function Appointments() {
       behavior: "smooth",
     });
   }
-  console.log(appointments);
+
   return (
     <>
       <Navbar />
@@ -100,7 +114,7 @@ function Appointments() {
                   <Link
                     className="boton-mas"
                     onClick={() => {
-                      handleDel(elemento.id);
+                      handleDel(elemento.id, elemento.user.email);
                     }}
                     style={{ left: "68%", top: "7px" }}
                   >

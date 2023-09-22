@@ -2,17 +2,34 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "animate.css/animate.min.css";
 import { alerts } from "../utils/alerts";
+import { useSelector } from "react-redux";
 
 function AppointmentsCards({ cita, modFavs }) {
+  const user = useSelector((state) => state.user);
+
   //eliminar cita
   function handleDel(id) {
     axios
       .delete(`/api/appointments/${id}`)
       .then(() => {
         alerts("Ok!", "Cita cancelada! 🤝", "success");
+        sendEmail(user.email);
         modFavs();
       })
       .catch((err) => console.log(err));
+  }
+
+  function sendEmail(email) {
+    axios
+      .post(`/api/users/delete/${email}`)
+      .then((res) => {
+        alerts("Exito!", "Mail de cencelación enviado ✉️", "success");
+        console.log(res);
+      })
+      .catch((err) => {
+        alerts("Rayos!", "Mail no pudo enviarse ☠️", "warning");
+        console.log(err);
+      });
   }
 
   return (

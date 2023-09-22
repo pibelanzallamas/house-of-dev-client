@@ -169,7 +169,7 @@ function User() {
             </div>
             <div className="todo-tarjetas-prop">
               {citas.map((app) => (
-                <AppointmentsCards cita={app} modFavs={hanldeEstado} /> //cancelar
+                <AppointmentsCards cita={app} modFavs={hanldeEstado} />
               ))}
             </div>
           </>
