@@ -484,18 +484,26 @@ function Property() {
                 <></>
               )}
               {like ? (
-                <Link className="boton-like2" onClick={hanldeDislike}>
+                <Link
+                  className="boton-like2"
+                  style={{ top: "90%" }}
+                  onClick={hanldeDislike}
+                >
                   <img src="/boton-cora2.png" alt="boton-cora2" />
                 </Link>
               ) : (
-                <Link className="boton-like2" onClick={hanldeLike}>
+                <Link
+                  className="boton-like2"
+                  style={{ top: "90%" }}
+                  onClick={hanldeLike}
+                >
                   <img src="/boton-cora.png" alt="boton-cora" />
                 </Link>
               )}
               {date ? (
                 <Link
                   className="boton-like2"
-                  style={{ left: "90.5%" }}
+                  style={{ left: "90.5%", top: "90%" }}
                   to={`/appointments/register/${pid}`}
                 >
                   <img src="/boton-cita2.png" alt="boton-cita2" />
@@ -503,7 +511,7 @@ function Property() {
               ) : (
                 <Link
                   className="boton-like2"
-                  style={{ left: "90.5%" }}
+                  style={{ left: "90.5%", top: "90%" }}
                   to={`/appointments/register/${pid}`}
                 >
                   <img src="/boton-cita.png" alt="boton-cita" />
