@@ -25,7 +25,7 @@ function Register() {
       .then((user) => {
         if (user.data[1]) {
           alerts("Exito!", `Usuario creado 🤠`, "success");
-          navigate("/login");
+          navigate("/");
         } else if (!user.data[1]) {
           alerts("Jum!", `Usuario ya existente 😤`, "warning");
         } else {
@@ -105,7 +105,7 @@ function Register() {
             ></input>
           </div>
 
-          <Link to={"/login"}>
+          <Link to={"/"}>
             <p className="forgetPassword">¿Ya tiene usuario?</p>
           </Link>
 

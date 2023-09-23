@@ -14,8 +14,8 @@ import Appointments from "./Appointments";
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Login />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/register" element={<Register />} />
       <Route path="/users/:id" element={<User />} />
       <Route path="/properties/:id" element={<Property />} />

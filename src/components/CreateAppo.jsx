@@ -50,7 +50,7 @@ function CreateAppo() {
           handleClose();
           alerts("Exito!", "Cita agendada correctamente 📝", "success");
           sendEmail(startDate, property);
-          navigate("/");
+          navigate("/home");
         } else {
           handleClose();
           alerts(

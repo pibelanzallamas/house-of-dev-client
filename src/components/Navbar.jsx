@@ -39,7 +39,7 @@ function Navbar() {
       .then(() => {
         dispatch(setUser(initialState));
         alerts("See ya!", `Goodbye ${user.name} 🚀`, "success");
-        navigate("/login");
+        navigate("/");
       })
       .catch((err) => console.log(err));
   }
@@ -48,7 +48,7 @@ function Navbar() {
     <nav style={condicion}>
       <div className="navbar">
         <div className="navbar-logo">
-          <Link to="/">
+          <Link to="/home">
             <img
               src="https://imagizer.imageshack.com/img922/6165/gwEBmS.png"
               alt="logo"
@@ -76,7 +76,7 @@ function Navbar() {
             </>
           ) : (
             <>
-              <Link to={"/login"}> Iniciar Sesión </Link>
+              <Link to={"/"}> Iniciar Sesión </Link>
               <Link to={"/register"}> Registrarse </Link>
             </>
           )}

@@ -24,7 +24,7 @@ function Login() {
       .then((payload) => {
         alerts("Aloha!", `Welcome ${payload.data.name} 🏝`, "success");
         dispatch(setUser(payload.data));
-        navigate("/");
+        navigate("/home");
       })
       .catch(() => {
         alerts("Nope!", "Email o password incorrectos ☠️", "danger");
@@ -86,7 +86,7 @@ function Login() {
               };
               alerts("Aloha!", `Welcome ${decode.name} 🏝`, "success");
               dispatch(setUser(payload));
-              navigate("/");
+              navigate("/home");
             }}
             onError={() => {
               console.log("Login Failed");

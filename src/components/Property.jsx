@@ -97,7 +97,6 @@ function Property() {
         if (mod.data[0] === 1) {
           setEstado(!estado);
           alerts("Ok!", "La propiedad se modificó 👍", "success");
-          navigate("/");
         } else {
           alerts("Ohoh!", "Ingrese datos validos 😵", "warning");
         }
@@ -113,7 +112,7 @@ function Property() {
       .delete(`/api/properties/${pid}`)
       .then(() => {
         alerts("Ok!", "Propiedad eliminada 👍", "success");
-        navigate("/");
+        navigate("/home");
       })
       .catch(() => {
         alerts("Ohno!", "La Propiedad no pudo eliminarse 🤨", "danger");

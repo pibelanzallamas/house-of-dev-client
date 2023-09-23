@@ -54,7 +54,7 @@ function Properties() {
         console.log(prop);
         if (prop.data[1]) {
           alerts("Vamos!", "La propiedad se creó con exito 🏠", "success");
-          navigate("/");
+          navigate("/home");
         } else if (!prop.data[1]) {
           alerts("Pará!", "La propiedad ya existe 🤠", "warning");
         } else {
