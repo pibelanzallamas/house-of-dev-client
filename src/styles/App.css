@@ -189,11 +189,6 @@
 }
 
 .home-image {
-  position: relative;
-  display: 0;
-}
-
-.home-imagen img {
   width: 100%;
   height: auto;
 }
@@ -357,7 +352,7 @@
   padding: 5px 15px;
   position: absolute;
   top: 85.5%;
-  left: 64%;
+  left: 62%;
   font-family: Montserrat;
   font-size: 12px;
   color: #5366d1;
@@ -370,20 +365,6 @@
   top: 69.3%;
   left: 11.5%;
   color: #5366d1;
-}
-
-.buttonGoogle {
-  position: absolute;
-  top: 87%;
-  left: 38%;
-  background-color: transparent;
-  padding: 5px 15px;
-  font-family: Montserrat;
-  color: #123ac8;
-  cursor: pointer;
-  border: 1px solid #2344bd;
-  border-radius: 40px;
-  font-size: 12px;
 }
 
 .navbar {
@@ -601,7 +582,7 @@
   padding: 5px 15px;
   position: absolute;
   top: 80%;
-  left: 59.5%;
+  left: 56.5%;
   font-family: Montserrat;
   color: #5366d1;
   cursor: pointer;
@@ -754,8 +735,8 @@
   position: absolute;
   left: 37%;
   top: 15%;
-  outline: none;
 }
+
 .inputSearch::placeholder {
   color: #123AC8;
 }
@@ -772,8 +753,8 @@
   font-size: 14px;
   position: absolute;
   top: 32%;
-  outline: none;
 }
+
 .a {
   left: 1.6%;
 }
@@ -805,6 +786,14 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+input:focus {
+  outline: none;
+}
+
+select:focus {
+  outline: none;
 }
 
 /*# sourceMappingURL=App.css.map */

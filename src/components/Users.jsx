@@ -7,7 +7,7 @@ import UserModals from "../modals/UserModals";
 function Users() {
   const [users, setUsers] = useState([]);
   const [estado, setEstado] = useState(false);
-  const [window, setWindow] = useState(false);
+  const [confirm, setConfirm] = useState(false);
   const [window2, setWindow2] = useState(false);
   const [data, setData] = useState({});
 
@@ -19,8 +19,8 @@ function Users() {
       .catch((err) => console.log(err));
   }, [estado]);
 
-  const openWindow = () => setWindow(true);
-  const closeWindow = () => setWindow(false);
+  const openWindow = () => setConfirm(true);
+  const closeWindow = () => setConfirm(false);
   const openWindow2 = () => setWindow2(true);
   const closeWindow2 = () => setWindow2(false);
 
@@ -137,7 +137,7 @@ function Users() {
           </button>
         </div>
         <UserModals
-          isOpen={window}
+          isOpen={confirm}
           onClose={closeWindow}
           onConfirm={confirmAdmin}
           text={"¿Desea modificar usuario?"}

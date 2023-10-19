@@ -3,8 +3,6 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "../state/userState";
 import { useNavigate, Link } from "react-router-dom";
-// import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-// import jwt_decode from "jwt-decode";
 import { alerts } from "../utils/alerts";
 
 function Login() {
@@ -68,31 +66,8 @@ function Login() {
           <Link className="registrarse" to="/register">
             <p>¿Registrarse?</p>
           </Link>
-          <button className="buttonLogin">Log In</button>
+          <button className="buttonLogin">Ingrese</button>
         </form>
-      </div>
-      <div style={{ left: "82%", position: "absolute" }}>
-        {/* <GoogleOAuthProvider clientId="413054924757-e1sknitkpf313733h32aq5mfhse3f1j8.apps.googleusercontent.com">
-          <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              const decode = jwt_decode(credentialResponse.credential);
-              console.log(decode);
-              const payload = {
-                id: decode.exp,
-                email: decode.email,
-                name: decode.name,
-                telephone: decode.exp,
-                admin: false,
-              };
-              alerts("Aloha!", `Welcome ${decode.name} 🏝`, "success");
-              dispatch(setUser(payload));
-              navigate("/home");
-            }}
-            onError={() => {
-              console.log("Login Failed");
-            }}
-          />
-        </GoogleOAuthProvider> */}
       </div>
     </div>
   );

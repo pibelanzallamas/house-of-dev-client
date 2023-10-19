@@ -30,7 +30,7 @@ function Properties() {
         </div>
         {properties.map((elemento) => (
           <div className="property-card" style={{ "margin-bottom": "3%" }}>
-            <div className="user-datos" style={{ height: "880px" }}>
+            <div className="user-datos" style={{ height: "900px" }}>
               <form>
                 <img
                   src={elemento.images}

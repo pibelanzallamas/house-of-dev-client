@@ -282,6 +282,13 @@ function Property() {
       .catch((err) => console.log(err));
   }
 
+  function handleScroll() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   return (
     <div>
       <Navbar />
@@ -292,7 +299,10 @@ function Property() {
           </h2>
         </div>
         <div className="property-card">
-          <div className="user-datos" style={{ height: "890px" }}>
+          <div
+            className="user-datos"
+            style={{ height: "950px", padding: "2rem" }}
+          >
             <form onSubmit={handleMod}>
               <img
                 src={images}
@@ -467,14 +477,14 @@ function Property() {
                   </div>
                   <button
                     className="boton-editar"
-                    style={{ left: "62%", top: "92%" }}
+                    style={{ left: "65%", top: "93%" }}
                   >
                     MODIFICAR
                   </button>
                   <button
                     className="boton-editar "
                     onClick={(e) => handleDel(e)}
-                    style={{ left: "75%", top: "92%" }}
+                    style={{ left: "76%", top: "93%" }}
                   >
                     ELIMINAR
                   </button>
@@ -556,7 +566,7 @@ function Property() {
                   <br></br>
                   <label> VALORACIÓN </label>
                   <br></br>
-                  <input type="number" value={review.rating}></input>
+                  <input type="text" value={review.rating}></input>
                   <br></br>
                   <label> COMENTARIO </label>
                   <br></br>
@@ -582,7 +592,11 @@ function Property() {
           <div className="property-card">
             <div
               className="user-datos"
-              style={{ height: "170px", position: "relative" }}
+              style={{
+                height: "180px",
+                position: "relative",
+                padding: "1.7rem",
+              }}
             >
               <form onSubmit={handleReview}>
                 <div>
@@ -611,13 +625,20 @@ function Property() {
 
                 <button
                   className="boton-editar"
-                  style={{ left: "87%", top: "78%" }}
+                  style={{ left: "85%", top: "83%" }}
                 >
                   GUARDAR
                 </button>
               </form>
             </div>
           </div>
+          <button
+            className="onTop"
+            onClick={handleScroll}
+            style={{ marginTop: "2rem", "margin-bottom": "2rem" }}
+          >
+            IR A INICIO
+          </button>
         </div>
         <UserModals
           isOpen={window}

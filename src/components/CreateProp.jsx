@@ -54,11 +54,11 @@ function Properties() {
         console.log(prop);
         if (prop.data[1]) {
           alerts("Vamos!", "La propiedad se creó con exito 🏠", "success");
-          navigate("/home");
+          navigate(`/properties/${prop.data[0].id}`);
+        } else if (prop.data.errors) {
+          alerts("Ey!", "Ingrese datos validos 😖", "warning");
         } else if (!prop.data[1]) {
           alerts("Pará!", "La propiedad ya existe 🤠", "warning");
-        } else {
-          alerts("Ey!", "Ingrese datos validos 😡", "warning");
         }
       })
       .catch((err) => console.log(err));
@@ -94,8 +94,11 @@ function Properties() {
         </div>
 
         <div className="property-card">
-          <div className="user-datos" style={{ height: "742px" }}>
-            <form onSubmit={handleRegister} style={{ "margin-top": "20px" }}>
+          <div className="user-datos" style={{ height: "822px" }}>
+            <form
+              onSubmit={handleRegister}
+              style={{ "margin-top": "10px", padding: "2rem" }}
+            >
               <div className="inputName">
                 <label> Nombre </label>
                 <br></br>
@@ -245,7 +248,7 @@ function Properties() {
 
               <button
                 className="boton-editar"
-                style={{ left: "86.5%", top: "94%" }}
+                style={{ left: "84.5%", top: "94%" }}
               >
                 GUARDAR
               </button>
