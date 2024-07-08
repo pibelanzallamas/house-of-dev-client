@@ -106,7 +106,7 @@ function Users() {
                       ADMIN
                     </button>
                   )}
-                  {user.email === "b@gmail.com" ? (
+                  {user.email === "admin@email.com" ? (
                     <></>
                   ) : (
                     <button

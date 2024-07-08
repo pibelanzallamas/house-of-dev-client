@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import UserModals from "../modals/UserModals";
 
-function AppointmentsCards({ cita, modFavs }) {
+function AppointmentsCards({ cita, modFavs, cancelDate }) {
   const user = useSelector((state) => state.user);
   const [window, setWindow] = useState(false);
   const [aid, setAid] = useState("");
@@ -35,6 +35,7 @@ function AppointmentsCards({ cita, modFavs }) {
         alerts("Ok!", "Cita cancelada! 🤝", "success");
         sendEmail(user.email);
         modFavs();
+        cancelDate();
         handleClose();
       })
       .catch((err) => console.log(err));
@@ -51,7 +52,6 @@ function AppointmentsCards({ cita, modFavs }) {
             <div className="cuadradito-uno">
               <p style={{ top: "-6px" }}>
                 <strong>
-                  {" "}
                   {cita.date.slice(11, 13) - 3}:{cita.date.slice(14, 16)} hs
                 </strong>
               </p>
